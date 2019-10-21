@@ -2,6 +2,14 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import itertools
 
+"""
+Creates a star graph.
+@params:
+    N - number of nodes
+    weight_values - list of edge weights, optional parameter
+@return:
+    G - star graph
+"""
 def create_star_with_weight(N, weight_values=1):
     G = nx.Graph()
     if isinstance(weight_values, list):
@@ -12,7 +20,15 @@ def create_star_with_weight(N, weight_values=1):
             G.add_edge(0, node, weight=1)
     return G
 
-def complete_graph_from_list(N, create_using=None):
+"""
+Creates a fully connected graph.
+@params:
+    N - number of nodes
+    create_using - subgraph
+@return:
+    G - fully connected graph
+"""
+def fully_connected_graph_from_list(N, create_using=None):
     G = nx.empty_graph(N, create_using)
     if N > 1:
         if G.is_directed():
@@ -23,6 +39,14 @@ def complete_graph_from_list(N, create_using=None):
             G.add_edge(u,v, weight=1)
     return G
 
+"""
+Edge difference of 2 graphs.
+@params:
+    S - "source" graph
+    R - reference graph
+@return:
+    G - graph with edges of S-R
+"""
 def difference(S, R):
     DIF = nx.create_empty_copy(R)
     DIF.name = 'Difference of (%s and %s)' % (S.name, R.name)

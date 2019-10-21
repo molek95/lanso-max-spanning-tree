@@ -11,7 +11,7 @@ import graph
 N = 7
 G = graph.create_star_with_weight(N)
 graph.draw(G)
-G_comp = graph.complete_graph_from_list(N)
+G_comp = graph.fully_connected_graph_from_list(N)
 graph.draw(G_comp)
 print('G nodes:', G.nodes())
 print('G_comp nodes: ', G_comp.nodes())
