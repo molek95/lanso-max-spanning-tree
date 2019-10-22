@@ -45,7 +45,7 @@ Edge difference of 2 graphs.
     S - "source" graph
     R - reference graph
 @return:
-    G - graph with edges of S-R
+    DIF - graph with edges of S-R
 """
 def difference(S, R):
     DIF = nx.create_empty_copy(R)
