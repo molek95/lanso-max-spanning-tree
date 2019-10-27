@@ -1,6 +1,8 @@
 import networkx as nx
 import matplotlib.pyplot as plt
 import itertools
+from scipy import linalg
+from scipy.sparse import csr_matrix
 
 """
 Creates a star graph.
@@ -10,7 +12,7 @@ Creates a star graph.
 @return:
     G - star graph
 """
-def create_star_with_weight(N, weight_values=1):
+def create_graph_with_weight(N, weight_values=1):
     G = nx.Graph()
     if isinstance(weight_values, list):
         for node in range(1, N):
@@ -61,6 +63,12 @@ def difference(S, R):
     DIF.add_edges_from(diff_edges)
     
     return DIF
+
+def calculate_number_of_spanning_trees(G):
+    L = nx.laplacian_matrix(G)
+    L = csr_matrix.todense(L)
+    L1 = L[:-1,:-1]
+    return round(linalg.det(L1))
 
 def draw(G):
     elarge = [(u,v) for (u,v,d) in G.edges(data=True) if d['weight'] > 0.5]
