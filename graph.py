@@ -70,6 +70,20 @@ def calculate_number_of_spanning_trees(G):
     L1 = L[:-1,:-1]
     return round(linalg.det(L1))
 
+def test_correct_edges(G, Q, number_of_edges_from_Q):
+    Q = list(Q)
+    for idx in enumerate(Q):
+        G_copy = G.copy(G)
+        if (idx[0] <= len(Q) - number_of_edges_from_Q):
+            for index in range(idx[0], idx[0]+number_of_edges_from_Q):
+                print('index:', index)
+                (u,v,w) = Q[index]
+                G_copy.add_edge(u,v, weight=w)
+        print('G_copy edges:', G_copy.edges())
+            
+
+
+
 def draw(G):
     elarge = [(u,v) for (u,v,d) in G.edges(data=True) if d['weight'] > 0.5]
     esmall = [(u,v) for (u,v,d) in G.edges(data=True) if d['weight'] <= 0.5]
