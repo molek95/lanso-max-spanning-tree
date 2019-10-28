@@ -23,13 +23,12 @@ if __name__ == "__main__":
     #print('Q: ', Q)
     
     G_test = G.copy(G)
-    
+
     for i in range(1,len(Q)+1):
         G_copy = G.copy(G)
         P = alg1.greedy_th(G_copy, Q, 0.1, i)
         number_of_spanning_trees = graph.calculate_number_of_spanning_trees(G_copy)
         print('Number of spanning trees (according to algorithm1), when k =',i, ' is: ' ,number_of_spanning_trees)
         print('G: ', G_copy.edges())
-        
-        for i in range(1, len(Q)+1):
-            graph.test_correct_edges(G_test, Q, i)
+    for i in range(1, len(Q)+1):
+        graph.test_correct_edges(G_test, Q, i)

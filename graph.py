@@ -69,24 +69,18 @@ def calculate_number_of_spanning_trees(G):
     L1 = L[:-1,:-1]
     return round(linalg.det(L1))
 
-#TODO: not working correctly example: if number_of_edges_from_Q is 3 and len(Q)=15 --- output: 455 possibilities
-# https://stackoverflow.com/questions/464864/how-to-get-all-possible-combinations-of-a-list-s-elements?fbclid=IwAR08bYlfcQATZoM4iab_JITixZoXqyBzxcUwi0B0eTdRKUJANSG0uEauwyc
-def test_correct_edges(G, Q, number_of_edges_from_Q):
-    Q = list(Q)
+def test_correct_edges(G, Q, k):
     max_number_of_spanning_tree = 0
-    for idx in enumerate(Q):
+    edge_combination = itertools.combinations(Q, k)
+    for edge in edge_combination:
         G_copy = G.copy(G)
-        if (idx[0] <= len(Q) - number_of_edges_from_Q):
-            for index in range(idx[0], idx[0]+number_of_edges_from_Q):
-                (u,v,w) = Q[index]
-                G_copy.add_edge(u,v, weight=w)
+        for (u,v,w) in edge:
+            G_copy.add_edge(u,v, weight=w)
         if(len(G_copy.edges()) > len(G.edges())):
             number_of_spanning_tree = calculate_number_of_spanning_trees(G_copy)
-            print('Current spanning tree (k = ', number_of_edges_from_Q, ')', number_of_spanning_tree)
-            print('Edge set:', G_copy.edges())
             if (number_of_spanning_tree > max_number_of_spanning_tree):
                 max_number_of_spanning_tree = number_of_spanning_tree
-    print('Maximum spanning tree when k =', number_of_edges_from_Q, ' is: ', max_number_of_spanning_tree)
+    print('Maximum spanning tree when k =', k, ' is: ', max_number_of_spanning_tree)
     return max_number_of_spanning_tree
 
 
