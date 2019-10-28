@@ -70,6 +70,7 @@ def calculate_number_of_spanning_trees(G):
     return round(linalg.det(L1))
 
 #TODO: not working correctly example: if number_of_edges_from_Q is 3 and len(Q)=15 --- output: 455 possibilities
+# https://stackoverflow.com/questions/464864/how-to-get-all-possible-combinations-of-a-list-s-elements?fbclid=IwAR08bYlfcQATZoM4iab_JITixZoXqyBzxcUwi0B0eTdRKUJANSG0uEauwyc
 def test_correct_edges(G, Q, number_of_edges_from_Q):
     Q = list(Q)
     max_number_of_spanning_tree = 0
