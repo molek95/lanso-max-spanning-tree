@@ -59,7 +59,6 @@ def difference(S, R):
     s_edges = set(S.edges())
     
     diff_edges = r_edges.symmetric_difference(s_edges)
-    # diff_edges = r_edges - s_edges
     DIF.add_edges_from(diff_edges)
     
     return DIF
@@ -70,18 +69,24 @@ def calculate_number_of_spanning_trees(G):
     L1 = L[:-1,:-1]
     return round(linalg.det(L1))
 
+#TODO: not working correctly
 def test_correct_edges(G, Q, number_of_edges_from_Q):
     Q = list(Q)
+    max_number_of_spanning_tree = 0
     for idx in enumerate(Q):
         G_copy = G.copy(G)
         if (idx[0] <= len(Q) - number_of_edges_from_Q):
             for index in range(idx[0], idx[0]+number_of_edges_from_Q):
-                print('index:', index)
                 (u,v,w) = Q[index]
                 G_copy.add_edge(u,v, weight=w)
-        print('G_copy edges:', G_copy.edges())
-            
-
+        if(len(G_copy.edges()) > len(G.edges())):
+            number_of_spanning_tree = calculate_number_of_spanning_trees(G_copy)
+            print('Current spanning tree (k = ', number_of_edges_from_Q, ')', number_of_spanning_tree)
+            print('Edge set:', G_copy.edges())
+            if (number_of_spanning_tree > max_number_of_spanning_tree):
+                max_number_of_spanning_tree = number_of_spanning_tree
+    print('Maximum spanning tree when k =', number_of_edges_from_Q, ' is: ', max_number_of_spanning_tree)
+    return max_number_of_spanning_tree
 
 
 def draw(G):

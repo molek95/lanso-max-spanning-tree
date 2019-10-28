@@ -30,15 +30,13 @@ def greedy_th(G,Q,e,k):
 """
 def greedy_th(G, Q, e, k):
     q = len(Q)
-    print('G edges',G.edges())
-    G_copy = G.copy(G)
     if (k > q):
         return 'k is larger then q'
     P = set()
     er_max = 0
     for (u, v, w) in Q:
         # er_temp = G[u][v]['weight'] * nx.resistance_distance(G, u, v)
-        er_temp = w * nx.resistance_distance(G_copy, u, v)
+        er_temp = w * nx.resistance_distance(G, u, v)
         #print('ER (u,v):', (u,v, er_temp))
         if er_temp >= er_max:
             er_max = er_temp
@@ -46,8 +44,8 @@ def greedy_th(G, Q, e, k):
     # print ('ER max:', er_max)
     while th >= (e/q) * er_max:
         for (u, v, w) in (Q-P):
-            if (len(P) < k) and (w * nx.resistance_distance(G_copy, u, v) >= th):
-                G_copy.add_edge(u, v, weight=w)
+            if (len(P) < k) and (w * nx.resistance_distance(G, u, v) >= th):
+                G.add_edge(u, v, weight=w)
                 P.add((u,v))
         th = (1-e)*th
     return P
