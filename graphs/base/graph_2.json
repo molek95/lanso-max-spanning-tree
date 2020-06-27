@@ -1,0 +1,177 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "id": 0
+    },
+    {
+      "id": 1
+    },
+    {
+      "id": 2
+    },
+    {
+      "id": 3
+    },
+    {
+      "id": 4
+    },
+    {
+      "id": 5
+    },
+    {
+      "id": 6
+    },
+    {
+      "id": 7
+    },
+    {
+      "id": 8
+    },
+    {
+      "id": 9
+    },
+    {
+      "id": 10
+    }
+  ],
+  "links": [
+    {
+      "weight": 0.06,
+      "source": 0,
+      "target": 2
+    },
+    {
+      "weight": 0.26,
+      "source": 0,
+      "target": 8
+    },
+    {
+      "weight": 0.25,
+      "source": 0,
+      "target": 10
+    },
+    {
+      "weight": 0.94,
+      "source": 1,
+      "target": 2
+    },
+    {
+      "weight": 0.58,
+      "source": 1,
+      "target": 3
+    },
+    {
+      "weight": 0.73,
+      "source": 1,
+      "target": 5
+    },
+    {
+      "weight": 0.55,
+      "source": 1,
+      "target": 7
+    },
+    {
+      "weight": 0.08,
+      "source": 1,
+      "target": 9
+    },
+    {
+      "weight": 0.85,
+      "source": 1,
+      "target": 10
+    },
+    {
+      "weight": 0.05,
+      "source": 2,
+      "target": 3
+    },
+    {
+      "weight": 0.96,
+      "source": 2,
+      "target": 9
+    },
+    {
+      "weight": 0.88,
+      "source": 2,
+      "target": 10
+    },
+    {
+      "weight": 0.34,
+      "source": 3,
+      "target": 4
+    },
+    {
+      "weight": 0.12,
+      "source": 3,
+      "target": 6
+    },
+    {
+      "weight": 0.12,
+      "source": 3,
+      "target": 8
+    },
+    {
+      "weight": 0.1,
+      "source": 3,
+      "target": 9
+    },
+    {
+      "weight": 0.52,
+      "source": 4,
+      "target": 5
+    },
+    {
+      "weight": 0.03,
+      "source": 4,
+      "target": 7
+    },
+    {
+      "weight": 0.38,
+      "source": 4,
+      "target": 9
+    },
+    {
+      "weight": 0.86,
+      "source": 5,
+      "target": 6
+    },
+    {
+      "weight": 0.62,
+      "source": 5,
+      "target": 7
+    },
+    {
+      "weight": 0.81,
+      "source": 5,
+      "target": 8
+    },
+    {
+      "weight": 0.61,
+      "source": 5,
+      "target": 9
+    },
+    {
+      "weight": 0.48,
+      "source": 5,
+      "target": 10
+    },
+    {
+      "weight": 0.08,
+      "source": 6,
+      "target": 8
+    },
+    {
+      "weight": 0.94,
+      "source": 7,
+      "target": 10
+    },
+    {
+      "weight": 0.88,
+      "source": 9,
+      "target": 10
+    }
+  ]
+}

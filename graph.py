@@ -3,6 +3,9 @@ import matplotlib.pyplot as plt
 import itertools
 from scipy import linalg
 from scipy.sparse import csr_matrix
+import random
+from networkx.readwrite import json_graph
+import json
 
 """
 Creates a star graph.
@@ -95,3 +98,31 @@ def draw(G):
     nx.draw_networkx_labels(G, pos, font_size=20, font_family='sans-serif')
     plt.axis('off')
     plt.show()
+    
+def generate_random_graph(number_of_nodes, edge_probability):
+    is_connected = False
+    while is_connected == False:
+        G = nx.gnp_random_graph(number_of_nodes, edge_probability)
+        is_connected = nx.is_connected(G)
+    for (u,v) in G.edges():
+        G.edges[u,v]['weight'] = round(random.uniform(0,1), 2)
+    return G
+
+def generate_random_graph_with_unit_weight(number_of_nodes, edge_probability):
+    is_connected = False
+    while is_connected == False:
+        G = nx.gnp_random_graph(number_of_nodes, edge_probability)
+        is_connected = nx.is_connected(G)
+    for i, (u,v) in enumerate(G.edges()):
+        G.edges[u,v]['weight'] = 1
+    return G
+
+def save_json(filename, graph):
+    g = graph
+    g_json = json_graph.node_link_data(g)
+    json.dump(g_json, open(filename, 'w'), indent=2)
+    
+def read_json_file(filename):
+   with open(filename) as f:
+       js_graph = json.load(f)
+   return json_graph.node_link_graph(js_graph)
