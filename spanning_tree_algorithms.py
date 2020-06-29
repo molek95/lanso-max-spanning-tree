@@ -71,7 +71,7 @@ def graph_enumeration(G, Q, k):
     max_number_of_spanning_tree = max_number_of_spanning_tree[::-1]
     return max_number_of_spanning_tree[0]
 
-
+"""
 def test_correct_edges(G, Q, k):
     max_number_of_spanning_tree = g.calculate_number_of_spanning_trees(G)
     edge_combination = itertools.combinations(Q, k)
@@ -87,3 +87,4 @@ def test_correct_edges(G, Q, k):
             best_edges.add(edge)
     print('test_correct_edges_ Maximum spanning tree when k =', k, ' is: ', max_number_of_spanning_tree)
     return (max_number_of_spanning_tree, best_edges)
+"""

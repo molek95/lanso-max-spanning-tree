@@ -34,6 +34,9 @@ def save_result(data, index, directory_name, alg_name):
 
 
 if __name__ == "__main__":
+    
+    fix_k = 5
+    
     if(sys.argv and len(sys.argv) == 6):
         number_of_graphs = int(sys.argv[1])
         lower_node_bound = int(sys.argv[2])
@@ -41,7 +44,7 @@ if __name__ == "__main__":
         edge_probability = float(sys.argv[4])
         threshold = float(sys.argv[5])
     else:
-        number_of_graphs = 1
+        number_of_graphs = 10
         lower_node_bound = 5
         upper_node_bound = 8
         edge_probability = 0.5
@@ -67,7 +70,7 @@ if __name__ == "__main__":
         total_result_collector = list()
         
         # run algorithm 1
-        for i in range(1, len(q)+1):
+        for i in range(1, fix_k):
             g_copy = g.copy(g)
             p = st_alg.algorithm_1(g_copy, q, threshold, i)
             number_of_spanning_trees = graph.calculate_number_of_spanning_trees(g_copy)
@@ -82,7 +85,7 @@ if __name__ == "__main__":
             algorithm_1_result_collector.append(result)
             
         # run greedy
-        for i in range(1, len(q)+1):
+        for i in range(1, fix_k):
             g_copy = g.copy(g)
             p = st_alg.greedy(g_copy, q, i)
             number_of_spanning_trees = graph.calculate_number_of_spanning_trees(g_copy)
@@ -96,7 +99,7 @@ if __name__ == "__main__":
             }
             greedy_result_collector.append(result)
             
-        for i in range(1, len(q)+1):
+        for i in range(1, fix_k):
             g_copy = g.copy(g)
             res = st_alg.graph_enumeration(g_copy, q, i)
             result = {
