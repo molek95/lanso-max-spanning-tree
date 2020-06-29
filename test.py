@@ -7,6 +7,9 @@ import spanning_tree_algorithms as st_alg
 from shutil import copyfile
 import os
 import json
+import multiprocessing as mp
+from time import time
+
 """
 graph_container = list()
 
@@ -75,8 +78,32 @@ print(test_res)
 json.dump(test_res, open('asd.json', 'w'))
 """
 
-import sys
+print('Number of processors: ', mp.cpu_count())
 
-print('arg number: ', len(sys.argv))
-print('arg list: ', str(sys.argv))
-print(type(sys.argv[3]))
+G = graph.read_json_file('./graphs/base/graph_0.json')
+N = len(G.nodes)
+G_comp = graph.fully_connected_graph_from_list(N)
+DIF = graph.difference(G_comp, G).edges(data='weight', default=1)
+graph.draw(G)
+Q = set(DIF)
+
+print('base spanning trees: ', graph.calculate_number_of_spanning_trees(G))
+spanning_tree = st_alg.test_correct_edges(G, Q, 2)
+print('spanning tree: ', spanning_tree[0])
+#print('edges: ', spanning_tree[1])
+for edge in spanning_tree[1]:
+    print(edge)
+
+G.add_edge(2, 5, weight=1)
+G.add_edge(2, 3, weight=1)
+print(graph.calculate_number_of_spanning_trees(G))
+"""
+print('base spanning trees: ', graph.calculate_number_of_spanning_trees(G))
+spanning_tree = st_alg.graph_enumeration(G, Q, 2)
+print(spanning_tree)
+"""
+"""
+for i in range(0,3):
+    spanning_tree = st_alg.graph_enumeration(G, Q, i)
+    print(spanning_tree)
+"""

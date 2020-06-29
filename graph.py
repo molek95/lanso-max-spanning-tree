@@ -72,21 +72,6 @@ def calculate_number_of_spanning_trees(G):
     L1 = L[:-1,:-1]
     return round(linalg.det(L1))
 
-def test_correct_edges(G, Q, k):
-    max_number_of_spanning_tree = 0
-    edge_combination = itertools.combinations(Q, k)
-    for edge in edge_combination:
-        G_copy = G.copy(G)
-        for (u,v,w) in edge:
-            G_copy.add_edge(u,v, weight=w)
-        if(len(G_copy.edges()) > len(G.edges())):
-            number_of_spanning_tree = calculate_number_of_spanning_trees(G_copy)
-            if (number_of_spanning_tree > max_number_of_spanning_tree):
-                max_number_of_spanning_tree = number_of_spanning_tree
-    print('Maximum spanning tree when k =', k, ' is: ', max_number_of_spanning_tree)
-    return max_number_of_spanning_tree
-
-
 def draw(G):
     elarge = [(u,v) for (u,v,d) in G.edges(data=True) if d['weight'] > 0.5]
     esmall = [(u,v) for (u,v,d) in G.edges(data=True) if d['weight'] <= 0.5]

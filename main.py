@@ -51,7 +51,7 @@ if __name__ == "__main__":
     graph_container = list()
     
     for i in range(number_of_graphs):
-        G = graph.generate_random_graph(randint(lower_node_bound, upper_node_bound), edge_probability)
+        G = graph.generate_random_graph_with_unit_weight(randint(lower_node_bound, upper_node_bound), edge_probability)
         graph_container.append(G)
         save_base_graphs(G,i)
     
@@ -64,6 +64,7 @@ if __name__ == "__main__":
         q = set(dif)
         algorithm_1_result_collector = list()
         greedy_result_collector = list()
+        total_result_collector = list()
         
         # run algorithm 1
         for i in range(1, len(q)+1):
@@ -94,7 +95,22 @@ if __name__ == "__main__":
                     'edge_list' : list(g_copy.edges())
             }
             greedy_result_collector.append(result)
-            
+        """    
+        for i in range(1, len(q)+1):
+            g_copy = g.copy(g)
+            p = st_alg.test_correct_edges(g_copy, q, i)
+            number_of_spanning_trees = graph.calculate_number_of_spanning_trees(g_copy)
+            result = {
+                    'graph_name' : 'graph_' + str(index),
+                    'number_of_nodes': len(g_copy.nodes()),
+                    'k' : i,
+                    'P' : list(p),
+                    'number_of_spanning_trees' : number_of_spanning_trees,
+                    'edge_list': list(g_copy.edges())
+            }
+            total_result_collector.append(result)
+        """    
         save_result(algorithm_1_result_collector, index, 'algorithm_1', 'algorithm_1_')
         save_result(greedy_result_collector, index, 'greedy', 'greedy_')
+        #save_result(total_result_collector, index, 'enumeration', 'enumeration_')
         

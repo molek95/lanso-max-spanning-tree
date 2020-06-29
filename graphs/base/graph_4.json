@@ -26,110 +26,92 @@
     },
     {
       "id": 7
-    },
-    {
-      "id": 8
     }
   ],
   "links": [
     {
-      "weight": 0.37,
+      "weight": 1,
+      "source": 0,
+      "target": 1
+    },
+    {
+      "weight": 1,
       "source": 0,
       "target": 2
     },
     {
-      "weight": 0.77,
+      "weight": 1,
       "source": 0,
       "target": 3
     },
     {
-      "weight": 0.84,
-      "source": 0,
-      "target": 4
-    },
-    {
-      "weight": 0.05,
+      "weight": 1,
       "source": 0,
       "target": 5
     },
     {
-      "weight": 0.12,
+      "weight": 1,
       "source": 0,
       "target": 6
     },
     {
-      "weight": 0.34,
-      "source": 0,
-      "target": 7
-    },
-    {
-      "weight": 0.22,
+      "weight": 1,
       "source": 1,
       "target": 2
     },
     {
-      "weight": 0.06,
+      "weight": 1,
       "source": 1,
-      "target": 3
+      "target": 4
     },
     {
-      "weight": 0.24,
+      "weight": 1,
       "source": 2,
       "target": 5
     },
     {
-      "weight": 0.16,
+      "weight": 1,
+      "source": 2,
+      "target": 6
+    },
+    {
+      "weight": 1,
       "source": 2,
       "target": 7
     },
     {
-      "weight": 0.28,
-      "source": 2,
-      "target": 8
-    },
-    {
-      "weight": 0.48,
+      "weight": 1,
       "source": 3,
       "target": 4
     },
     {
-      "weight": 0.46,
+      "weight": 1,
+      "source": 3,
+      "target": 5
+    },
+    {
+      "weight": 1,
       "source": 3,
       "target": 6
     },
     {
-      "weight": 0.11,
-      "source": 3,
-      "target": 7
-    },
-    {
-      "weight": 0.53,
+      "weight": 1,
       "source": 4,
       "target": 5
     },
     {
-      "weight": 0.79,
+      "weight": 1,
       "source": 4,
       "target": 7
     },
     {
-      "weight": 0.42,
-      "source": 4,
-      "target": 8
-    },
-    {
-      "weight": 0.39,
+      "weight": 1,
       "source": 5,
-      "target": 7
+      "target": 6
     },
     {
-      "weight": 0.09,
+      "weight": 1,
       "source": 5,
-      "target": 8
-    },
-    {
-      "weight": 0.4,
-      "source": 6,
       "target": 7
     }
   ]
