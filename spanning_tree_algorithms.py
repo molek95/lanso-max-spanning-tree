@@ -4,35 +4,6 @@ import graph as g
 import itertools
 import multiprocessing as mp
 
-
-"""
-def greedy_th(G,Q,e,k):
-    q = len(Q)
-    P = set()
-    er_max = 0
-    for (u,v) in Q:
-        er_temp = nx.resistance_distance(G,u,v)
-        if er_temp >= er_max:
-            er_max = er_temp
-    th = er_max
-    while th >= (e/q)*er_max:
-        for (u,v) in (Q-P):
-            if (len(P)< k) and (nx.resistance_distance(G,u,v) >= th):
-                G.add_edge(u,v)
-                P.add((u,v))
-        th=(1-e)*th
-    return P
-
-"""
-"""
-@input:
-    G: G=(V,E), connected graph
-    Q: A candidate edge set with |Q| = q.
-    e: Error parameter
-    k: Number of edges to add
-@output:
-    P: A subset of Q with most k edges
-"""
 def algorithm_1(G, Q, e, k):
     q = len(Q)
     if (k > q):
@@ -74,27 +45,32 @@ def greedy(G, Q, k):
         P.add((x, y))
         G.add_edge(x,y, weight = w)
     return P
-"""
+
 def test_new_edge(edge_set, G, k):
     max_number_of_spanning_tree = 0
     G_copy = G.copy(G)
+    best_edges = list()
     for (u,v,w) in edge_set:
         G_copy.add_edge(u,v, weight=w)
         number_of_spanning_tree = g.calculate_number_of_spanning_trees(G_copy)
         if (number_of_spanning_tree > max_number_of_spanning_tree):
             max_number_of_spanning_tree = number_of_spanning_tree
-    print('Maximum spanning tree when k =', k, ' is: ', max_number_of_spanning_tree)
-    return max_number_of_spanning_tree
+            best_edges.clear()
+            best_edges.append(edge_set)
+
+    return (max_number_of_spanning_tree, best_edges)
 
 # test_correct_edges
 def graph_enumeration(G, Q, k):
     edge_combination = list(itertools.combinations(Q, k))
     pool = mp.Pool(mp.cpu_count())
-    print('cpu number: ', mp.cpu_count())
     max_number_of_spanning_tree = [pool.apply(test_new_edge, args=(edge, G, k)) for edge in edge_combination]
     pool.close()
-    return max_number_of_spanning_tree
-"""
+    pool.join()
+    max_number_of_spanning_tree.sort(key=lambda x:x[0])
+    max_number_of_spanning_tree = max_number_of_spanning_tree[::-1]
+    return max_number_of_spanning_tree[0]
+
 
 def test_correct_edges(G, Q, k):
     max_number_of_spanning_tree = g.calculate_number_of_spanning_trees(G)
@@ -109,5 +85,5 @@ def test_correct_edges(G, Q, k):
             max_number_of_spanning_tree = number_of_spanning_tree
             best_edges.clear()
             best_edges.add(edge)
-    print('Maximum spanning tree when k =', k, ' is: ', max_number_of_spanning_tree)
+    print('test_correct_edges_ Maximum spanning tree when k =', k, ' is: ', max_number_of_spanning_tree)
     return (max_number_of_spanning_tree, best_edges)

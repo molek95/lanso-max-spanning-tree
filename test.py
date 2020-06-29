@@ -91,17 +91,20 @@ print('base spanning trees: ', graph.calculate_number_of_spanning_trees(G))
 spanning_tree = st_alg.test_correct_edges(G, Q, 2)
 print('spanning tree: ', spanning_tree[0])
 #print('edges: ', spanning_tree[1])
+
 for edge in spanning_tree[1]:
     print(edge)
 
-G.add_edge(2, 5, weight=1)
-G.add_edge(2, 3, weight=1)
-print(graph.calculate_number_of_spanning_trees(G))
-"""
+#G.add_edge(0, 4, weight=1)
+#G.add_edge(2, 4, weight=1)
+#print(graph.calculate_number_of_spanning_trees(G))
+
+
 print('base spanning trees: ', graph.calculate_number_of_spanning_trees(G))
 spanning_tree = st_alg.graph_enumeration(G, Q, 2)
 print(spanning_tree)
-"""
+
+print('teszt: ',graph.calculate_number_of_spanning_trees(G))
 """
 for i in range(0,3):
     spanning_tree = st_alg.graph_enumeration(G, Q, i)

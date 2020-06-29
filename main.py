@@ -4,7 +4,7 @@ import graph
 import spanning_tree_algorithms as st_alg
 from shutil import copyfile
 import os
-from random import randint, seed
+from random import randint
 import json
 import sys
 
@@ -41,9 +41,9 @@ if __name__ == "__main__":
         edge_probability = float(sys.argv[4])
         threshold = float(sys.argv[5])
     else:
-        number_of_graphs = 10
+        number_of_graphs = 1
         lower_node_bound = 5
-        upper_node_bound = 15
+        upper_node_bound = 8
         edge_probability = 0.5
         threshold = 0.1
         
@@ -95,22 +95,21 @@ if __name__ == "__main__":
                     'edge_list' : list(g_copy.edges())
             }
             greedy_result_collector.append(result)
-        """    
+            
         for i in range(1, len(q)+1):
             g_copy = g.copy(g)
-            p = st_alg.test_correct_edges(g_copy, q, i)
-            number_of_spanning_trees = graph.calculate_number_of_spanning_trees(g_copy)
+            res = st_alg.graph_enumeration(g_copy, q, i)
             result = {
                     'graph_name' : 'graph_' + str(index),
                     'number_of_nodes': len(g_copy.nodes()),
                     'k' : i,
-                    'P' : list(p),
-                    'number_of_spanning_trees' : number_of_spanning_trees,
+                    'P' : list(res[1]),
+                    'number_of_spanning_trees' : res[0],
                     'edge_list': list(g_copy.edges())
             }
             total_result_collector.append(result)
-        """    
+          
         save_result(algorithm_1_result_collector, index, 'algorithm_1', 'algorithm_1_')
         save_result(greedy_result_collector, index, 'greedy', 'greedy_')
-        #save_result(total_result_collector, index, 'enumeration', 'enumeration_')
+        save_result(total_result_collector, index, 'enumeration', 'enumeration_')
         
