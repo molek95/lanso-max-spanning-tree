@@ -1,3 +1,5 @@
+2020.06.25.
+
 -nagyobb gráfok esetén párhuzamosítani a teljes leszámlálást
 	-for ciklus párhuzamosítása
 	-R-ben meg lehet mondani, hogy hány magon fusson
@@ -26,3 +28,10 @@
 - hozzá vett élet / hozzá nem vett élek elemzése -> hátha ad valami tippet hogy melyik éleket kell biztosan bevenni - keresési tér csökkentése
 
 kedd 5 óra a kövi találka
+--------------------------------------------------------------------------------------------------------------
+2020.06.30.
+
+-olyan verziót csinálni ebből ami tuti működik
+-requirment.txt készítése az anaconda csomagokkal
+-táblázat az eredményekkel: gráf, komplementer élhalmaz, bevett élek, éljellemzők (pl. edge betweeness centrality; másik éljellemzőket is jó lenne keresni)
+-csak a hozzávett élek elegek
