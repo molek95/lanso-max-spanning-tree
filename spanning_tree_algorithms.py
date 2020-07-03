@@ -61,9 +61,9 @@ def test_new_edge(edge_set, G, k):
     return (max_number_of_spanning_tree, best_edges)
 
 # test_correct_edges
-def graph_enumeration(G, Q, k):
+def graph_enumeration(G, Q, k, cpu_number):
     edge_combination = list(itertools.combinations(Q, k))
-    pool = mp.Pool(mp.cpu_count())
+    pool = mp.Pool(cpu_number)
     max_number_of_spanning_tree = [pool.apply(test_new_edge, args=(edge, G, k)) for edge in edge_combination]
     pool.close()
     pool.join()

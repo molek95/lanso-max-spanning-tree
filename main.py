@@ -10,6 +10,7 @@ import json
 import sys
 import networkx as nx
 import pandas as pd
+import multiprocessing as mp
 
 
 def save_base_graphs(g, index): 
@@ -79,7 +80,7 @@ def run_algorithms_and_generate_json_results(graph_container, fix_k):
             
         for i in range(1, fix_k):
             g_copy = g.copy(g)
-            res = st_alg.graph_enumeration(g_copy, q, i)
+            res = st_alg.graph_enumeration(g_copy, q, i, cpu_number)
             result = {
                     'graph_name' : 'graph_' + str(index),
                     'number_of_nodes': len(g_copy.nodes()),
@@ -94,7 +95,7 @@ def run_algorithms_and_generate_json_results(graph_container, fix_k):
         save_result(greedy_result_collector, index, 'greedy', 'greedy_')
         save_result(total_result_collector, index, 'enumeration', 'enumeration_')
 
-def create_csv(graph_data, path):
+def create_csv(graph_data, path, run_id):
     g_index = list()
     g_k = list()
     g_algorithm = list()
@@ -129,11 +130,14 @@ def create_csv(graph_data, path):
         }
     
     df = pd.DataFrame(df_graph_data)
-    df.to_csv('./report/' + path + '.csv', index=False)
+    df.to_csv('./report/' + str(run_id) + '/' + path + '.csv', index=False)
 
-def create_report(graph_container, fix_k):
+def create_report(graph_container, fix_k, cpu_number, run_id):
     if not os.path.exists('report'):
         os.makedirs('report')
+        
+    if not os.path.exists('report/' + str(run_id)):
+        os.makedirs('report/' + str(run_id))
     
     agl1_graph_data = list()
     greedy_graph_data = list()
@@ -188,7 +192,7 @@ def create_report(graph_container, fix_k):
             
         for i in range(1, fix_k):
             g_copy = g.copy(g)
-            res = st_alg.graph_enumeration(g_copy, q, i)
+            res = st_alg.graph_enumeration(g_copy, q, i, cpu_number)
             p = list(res[1])
             number_of_spanning_trees = res[0]
 
@@ -213,9 +217,9 @@ def create_report(graph_container, fix_k):
                     'number_of_spanning_trees' : number_of_spanning_trees
                 })
     
-    create_csv(agl1_graph_data, 'algorithm_1')
-    create_csv(greedy_graph_data, 'greedy')
-    create_csv(enumeration_graph_data, 'enumeration')
+    create_csv(agl1_graph_data, 'algorithm_1', run_id)
+    create_csv(greedy_graph_data, 'greedy', run_id)
+    create_csv(enumeration_graph_data, 'enumeration', run_id)
 
 
 if __name__ == "__main__":
@@ -227,6 +231,8 @@ if __name__ == "__main__":
         edge_probability = float(sys.argv[4])
         threshold = float(sys.argv[5])
         fix_k = int(sys.argv[6])
+        cpu_number = int(sys.argv[7])
+        run_id = int(sys.argv[8])
     else:
         number_of_graphs = 10
         lower_node_bound = 8
@@ -234,6 +240,8 @@ if __name__ == "__main__":
         edge_probability = 0.5
         threshold = 0.1
         fix_k = 3
+        cpu_number = mp.cpu_count()
+        run_id = 0
         
     weight_list = [1 for i in range(upper_node_bound)]
     graph_container = list()
@@ -243,5 +251,5 @@ if __name__ == "__main__":
         graph_container.append(G)
         save_base_graphs(G,i)
     
-    #run_algorithms_and_generate_json_results(graph_container, fix_k)
-    create_report(graph_container, fix_k)
+    #run_algorithms_and_generate_json_results(graph_container, fix_k, cpu_number)
+    create_report(graph_container, fix_k, cpu_number, run_id)
