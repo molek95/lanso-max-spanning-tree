@@ -220,7 +220,7 @@ def create_report(graph_container, fix_k):
 
 if __name__ == "__main__":
     
-    if(sys.argv and len(sys.argv) == 6):
+    if(sys.argv):
         number_of_graphs = int(sys.argv[1])
         lower_node_bound = int(sys.argv[2])
         upper_node_bound = int(sys.argv[3])
