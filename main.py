@@ -11,6 +11,7 @@ import sys
 import networkx as nx
 import pandas as pd
 import multiprocessing as mp
+import numpy as np
 
 
 def save_base_graphs(g, index): 
@@ -167,7 +168,7 @@ def create_report(graph_container, fix_k, cpu_number, run_id):
                     'complementer_edges' : q,
                     'added_edges' : new_edge_betweenness_centrality,
                     'all_edge_betweenness_centrality' : edge_betweenness_centrality,
-                    'number_of_spanning_trees' : number_of_spanning_trees
+                    'number_of_spanning_trees' : str(number_of_spanning_trees)
                 })
     
         for i in range(1, fix_k):
@@ -187,7 +188,7 @@ def create_report(graph_container, fix_k, cpu_number, run_id):
                     'complementer_edges' : q,
                     'added_edges' : new_edge_betweenness_centrality,
                     'all_edge_betweenness_centrality' : edge_betweenness_centrality,
-                    'number_of_spanning_trees' : number_of_spanning_trees
+                    'number_of_spanning_trees' : str(number_of_spanning_trees)
                 })
             
         for i in range(1, fix_k):
@@ -214,7 +215,7 @@ def create_report(graph_container, fix_k, cpu_number, run_id):
                     'complementer_edges' : q,
                     'added_edges' : new_edge_betweenness_centrality,
                     'all_edge_betweenness_centrality' : edge_betweenness_centrality,
-                    'number_of_spanning_trees' : number_of_spanning_trees
+                    'number_of_spanning_trees' : str(number_of_spanning_trees)
                 })
     
     create_csv(agl1_graph_data, 'algorithm_1', run_id)
@@ -230,7 +231,7 @@ if __name__ == "__main__":
         upper_node_bound = int(sys.argv[3])
         edge_probability = float(sys.argv[4])
         threshold = float(sys.argv[5])
-        fix_k = int(sys.argv[6])
+        fix_k = int(sys.argv[6]) + 1
         cpu_number = int(sys.argv[7])
         run_id = int(sys.argv[8])
     else:
