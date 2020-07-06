@@ -11,18 +11,19 @@ import sys
 import networkx as nx
 import pandas as pd
 import multiprocessing as mp
-import numpy as np
 
 
-def save_base_graphs(g, index): 
+def save_base_graphs(g, index, run_id): 
     if not os.path.exists('graphs'):
         os.makedirs('graphs')
     if not os.path.exists('graphs/base'):
         os.makedirs('graphs/base')
+    if not os.path.exists('graphs/base/' + str(run_id)):
+        os.makedirs('graphs/base/' + str(run_id))
     
     filename = 'graph_' + str(index) + '.json'
     graph.save_json(filename, g)
-    copyfile(filename, './graphs/base/' + filename)
+    copyfile(filename, './graphs/base/' + str(run_id) + '/' + filename)
     os.remove(filename)
     
 def load_base_graphs(filename):
@@ -250,7 +251,7 @@ if __name__ == "__main__":
     for i in range(number_of_graphs):
         G = graph.generate_random_graph_with_unit_weight(randint(lower_node_bound, upper_node_bound), edge_probability)
         graph_container.append(G)
-        save_base_graphs(G,i)
+        save_base_graphs(G,i, run_id)
     
     #run_algorithms_and_generate_json_results(graph_container, fix_k, cpu_number)
     create_report(graph_container, fix_k, cpu_number, run_id)
