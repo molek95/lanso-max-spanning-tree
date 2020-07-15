@@ -102,6 +102,12 @@ def generate_random_graph_with_unit_weight(number_of_nodes, edge_probability):
         G.edges[u,v]['weight'] = 1
     return G
 
+def generate_random_tree_with_weight(number_of_nodes, weight=1):
+    T = nx.random_tree(number_of_nodes)
+    for (u, v) in T.edges():
+        T.edges[u,v]['weight'] = weight
+    return T
+
 def save_json(filename, graph):
     g = graph
     g_json = json_graph.node_link_data(g)

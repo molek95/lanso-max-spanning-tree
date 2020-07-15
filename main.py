@@ -13,17 +13,19 @@ import pandas as pd
 import multiprocessing as mp
 
 
-def save_base_graphs(g, index, run_id): 
+def save_base_graphs(g, index, run_id, graph_type): 
     if not os.path.exists('graphs'):
         os.makedirs('graphs')
     if not os.path.exists('graphs/base'):
         os.makedirs('graphs/base')
     if not os.path.exists('graphs/base/' + str(run_id)):
         os.makedirs('graphs/base/' + str(run_id))
+    if not os.path.exists('graphs/base/' + str(run_id) + '/' + str(graph_type)):
+        os.makedirs('graphs/base/' + str(run_id) + '/' + str(graph_type))
     
     filename = 'graph_' + str(index) + '.json'
     graph.save_json(filename, g)
-    copyfile(filename, './graphs/base/' + str(run_id) + '/' + filename)
+    copyfile(filename, './graphs/base/' + str(run_id) + '/' + str(graph_type) + '/' + filename)
     os.remove(filename)
     
 def load_base_graphs(filename):
@@ -97,7 +99,7 @@ def run_algorithms_and_generate_json_results(graph_container, fix_k):
         save_result(greedy_result_collector, index, 'greedy', 'greedy_')
         save_result(total_result_collector, index, 'enumeration', 'enumeration_')
 
-def create_csv(graph_data, path, run_id):
+def create_csv(graph_data, path, run_id, graph_type):
     g_index = list()
     g_k = list()
     g_algorithm = list()
@@ -132,14 +134,17 @@ def create_csv(graph_data, path, run_id):
         }
     
     df = pd.DataFrame(df_graph_data)
-    df.to_csv('./report/' + str(run_id) + '/' + path + '.csv', index=False)
+    df.to_csv('./report/' + str(run_id) + '/' + str(graph_type) + '/' + path + '.csv', index=False)
 
-def create_report(graph_container, fix_k, cpu_number, run_id):
+def create_report(graph_container, fix_k, cpu_number, run_id, graph_type):
     if not os.path.exists('report'):
         os.makedirs('report')
         
     if not os.path.exists('report/' + str(run_id)):
         os.makedirs('report/' + str(run_id))
+        
+    if not os.path.exists('report/' + str(run_id) + '/' + str(graph_type)):
+        os.makedirs('report/' + str(run_id) + '/' + str(graph_type))
     
     agl1_graph_data = list()
     greedy_graph_data = list()
@@ -219,9 +224,9 @@ def create_report(graph_container, fix_k, cpu_number, run_id):
                     'number_of_spanning_trees' : str(number_of_spanning_trees)
                 })
     
-    create_csv(agl1_graph_data, 'algorithm_1', run_id)
-    create_csv(greedy_graph_data, 'greedy', run_id)
-    create_csv(enumeration_graph_data, 'enumeration', run_id)
+    create_csv(agl1_graph_data, 'algorithm_1', run_id, graph_type)
+    create_csv(greedy_graph_data, 'greedy', run_id, graph_type)
+    create_csv(enumeration_graph_data, 'enumeration', run_id, graph_type)
 
 
 if __name__ == "__main__":
@@ -247,11 +252,19 @@ if __name__ == "__main__":
         
     weight_list = [1 for i in range(upper_node_bound)]
     graph_container = list()
+    tree_container = list()
     
     for i in range(number_of_graphs):
         G = graph.generate_random_graph_with_unit_weight(randint(lower_node_bound, upper_node_bound), edge_probability)
         graph_container.append(G)
-        save_base_graphs(G,i, run_id)
+        save_base_graphs(G,i, run_id, 'erdos-renyi')
     
     #run_algorithms_and_generate_json_results(graph_container, fix_k, cpu_number)
-    create_report(graph_container, fix_k, cpu_number, run_id)
+    create_report(graph_container, fix_k, cpu_number, run_id, 'erdos-renyi')
+    
+    for i in range(number_of_graphs):
+        T = nx.random_tree(randint(lower_node_bound, upper_node_bound))
+        tree_container.append(T)
+        save_base_graphs(T, i, run_id, 'tree')
+    
+    create_report(tree_container, fix_k, cpu_number, run_id, 'tree')
