@@ -35,3 +35,7 @@ kedd 5 óra a kövi találka
 -requirment.txt készítése az anaconda csomagokkal
 -táblázat az eredményekkel: gráf, komplementer élhalmaz, bevett élek, éljellemzők (pl. edge betweeness centrality; másik éljellemzőket is jó lenne keresni)
 -csak a hozzávett élek elegek
+---------------------------------------------------------------------------------------------------------------
+2020.07.10.
+-fákat vizsgáljunk erdős-rényi helyett
+-span = determináns * 1/csúcszám
