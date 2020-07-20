@@ -6,11 +6,7 @@ Created on Mon Jul 20 14:53:26 2020
 @author: adam
 """
 
-import numpy as np
-import matplotlib.pyplot as plt
 import networkx as nx
-from scipy.sparse import csr_matrix
-from scipy import linalg
 
 def _expand(G, explored_nodes, explored_edges):
     frontier_nodes = list()
@@ -34,18 +30,19 @@ def find_all_spanning_trees(G, root=0):
 
     return [nx.from_edgelist(edges) for (nodes, edges) in solutions]
 
-# TODO: különböző feszítőfák száma G-ben amiben megtalálható e él / összes különböző feszítőfa meghatározása
-
-"""
-def draw_ST(ST):
-    for g in ST:
-        fig, ax = plt.subplots(1,1)
-        nx.draw_networkx(g, with_labels=True, node_size = 200, node_color='orange',font_size=10,ax=ax)
-        plt.axis('off')
-        plt.title('spanning tree')
-        plt.show()
-"""
+def get_spanning_edge_betweenness(G, all_spanning_trees):
+    spanning_edge_betweenness_data = list()
+    for edge in G.edges:
+        print('e: ', edge)
+        edge_sp_counter = 0
+        for span_tree in all_spanning_trees:
+            if edge in span_tree.edges:
+                edge_sp_counter = edge_sp_counter + 1
+        spanning_edge_betweennes = edge_sp_counter / len(all_spanning_trees)
+        spanning_edge_betweenness_data.append((edge, spanning_edge_betweennes))
+    return spanning_edge_betweenness_data
         
+"""
 N = 5
 G = nx.Graph()
 G.add_nodes_from([0,1,2,3,4,5])
@@ -54,12 +51,9 @@ G.add_edges_from([
     (1,2), (1,3), (2,5), (3,4), (4,5), (3,5)
 ])
 
-fig, ax = plt.subplots(1,1)
-nx.draw_networkx(G, with_labels=True, node_size = 200, node_color='orange',font_size=10,ax=ax)
-plt.axis('off')
-plt.title('base')
-
 ST = find_all_spanning_trees(G)
-print(len(ST))
-for i,span in enumerate(ST):
-    print(i, ':', span.edges)
+for g in ST:
+    print(g.edges)
+spanning_edge_betweennes = get_spanning_edge_betweenness(G, ST)
+print(spanning_edge_betweennes)
+"""
