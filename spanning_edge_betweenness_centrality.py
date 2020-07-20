@@ -33,7 +33,6 @@ def find_all_spanning_trees(G, root=0):
 def get_spanning_edge_betweenness(G, all_spanning_trees):
     spanning_edge_betweenness_data = list()
     for edge in G.edges:
-        print('e: ', edge)
         edge_sp_counter = 0
         for span_tree in all_spanning_trees:
             if edge in span_tree.edges:
