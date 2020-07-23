@@ -3,6 +3,7 @@
 import graph
 import spanning_tree_algorithms as st_alg
 import spanning_edge_betweenness_centrality as sp_ebc
+import vertex_centrality_to_edge as vertex_cte
 
 from shutil import copyfile
 import os
@@ -113,6 +114,9 @@ def create_csv(graph_data, path, run_id, graph_type):
     g_number_of_spanning_trees = list()
     g_time = list()
     g_span_ebc = list()
+    g_vertex_degree_mul_to_edge = list()
+    g_vertex_degree_add_to_edge = list()
+    
     
     for g_data in graph_data:
         g_index.append(g_data['index'])
@@ -126,6 +130,8 @@ def create_csv(graph_data, path, run_id, graph_type):
         g_number_of_spanning_trees.append(g_data['number_of_spanning_trees'])
         g_time.append(g_data['time'])
         g_span_ebc.append(g_data['spanning_edge_betweenness_centrality'])
+        g_vertex_degree_mul_to_edge.append(g_data['vertex_degree_mul_to_edge'])
+        g_vertex_degree_add_to_edge.append(g_data['g_vertex_degree_add_to_edge'])
         
     df_graph_data = {
             'id' : g_index,
@@ -138,7 +144,9 @@ def create_csv(graph_data, path, run_id, graph_type):
             'betweenness_centrality (all edges)' : g_all_edge_betweenness_centrality,
             'number_of_spanning_trees' : g_number_of_spanning_trees,
             'time': g_time,
-            'spanning_edge_betweenness_centrality': g_span_ebc
+            'spanning_edge_betweenness_centrality': g_span_ebc,
+            'vertex_degree_mul_to_edge': g_vertex_degree_mul_to_edge,
+            'vertex_degree_add_to_edge': g_vertex_degree_add_to_edge
         }
     
     df = pd.DataFrame(df_graph_data)
@@ -173,6 +181,8 @@ def create_report(graph_container, fix_k, cpu_number, run_id, graph_type):
             edge_betweenness_centrality = nx.edge_betweenness_centrality(g_copy)
             ST = sp_ebc.find_all_spanning_trees(g_copy)
             spanning_edge_betweennes = sp_ebc.get_spanning_edge_betweenness(g_copy, ST)
+            vertex_degree_mul_to_edge = vertex_cte.degree_centrality_multiplication(g_copy)
+            vertex_degree_add_to_edge = vertex_cte.degree_centrality_add(g_copy)
             new_edge_betweenness_centrality = [
                 (edge_key, edge_betweenness_centrality[edge_key]) for p_edge in p for edge_key in edge_betweenness_centrality.keys() if p_edge == edge_key
                 ]
@@ -188,7 +198,9 @@ def create_report(graph_container, fix_k, cpu_number, run_id, graph_type):
                     'all_edge_betweenness_centrality' : edge_betweenness_centrality,
                     'number_of_spanning_trees' : str(number_of_spanning_trees),
                     'time' : end - start,
-                    'spanning_edge_betweenness_centrality' : spanning_edge_betweennes
+                    'spanning_edge_betweenness_centrality' : spanning_edge_betweennes,
+                    'vertex_degree_mul_to_edge' : vertex_degree_mul_to_edge,
+                    'vertex_degree_add_to_edge' : vertex_degree_add_to_edge
                 })
     
         for i in range(1, fix_k):
@@ -199,6 +211,8 @@ def create_report(graph_container, fix_k, cpu_number, run_id, graph_type):
             edge_betweenness_centrality = nx.edge_betweenness_centrality(g_copy)
             ST = sp_ebc.find_all_spanning_trees(g_copy)
             spanning_edge_betweennes = sp_ebc.get_spanning_edge_betweenness(g_copy, ST)
+            vertex_degree_mul_to_edge = vertex_cte.degree_centrality_multiplication(g_copy)
+            vertex_degree_add_to_edge = vertex_cte.degree_centrality_add(g_copy)
             new_edge_betweenness_centrality = [
                 (edge_key, edge_betweenness_centrality[edge_key]) for p_edge in p for edge_key in edge_betweenness_centrality.keys() if p_edge == edge_key
                 ]
@@ -214,7 +228,9 @@ def create_report(graph_container, fix_k, cpu_number, run_id, graph_type):
                     'all_edge_betweenness_centrality' : edge_betweenness_centrality,
                     'number_of_spanning_trees' : str(number_of_spanning_trees),
                     'time' : end - start,
-                    'spanning_edge_betweenness_centrality' : spanning_edge_betweennes
+                    'spanning_edge_betweenness_centrality' : spanning_edge_betweennes,
+                    'vertex_degree_mul_to_edge' : vertex_degree_mul_to_edge,
+                    'vertex_degree_add_to_edge' : vertex_degree_add_to_edge
                 })
             
         for i in range(1, fix_k):
@@ -230,6 +246,8 @@ def create_report(graph_container, fix_k, cpu_number, run_id, graph_type):
             edge_betweenness_centrality = nx.edge_betweenness_centrality(g_copy)
             ST = sp_ebc.find_all_spanning_trees(g_copy)
             spanning_edge_betweennes = sp_ebc.get_spanning_edge_betweenness(g_copy, ST)
+            vertex_degree_mul_to_edge = vertex_cte.degree_centrality_multiplication(g_copy)
+            vertex_degree_add_to_edge = vertex_cte.degree_centrality_add(g_copy)
             p = [x[:2] for x in p[0]]
             
             new_edge_betweenness_centrality = [
@@ -247,7 +265,9 @@ def create_report(graph_container, fix_k, cpu_number, run_id, graph_type):
                     'all_edge_betweenness_centrality' : edge_betweenness_centrality,
                     'number_of_spanning_trees' : str(number_of_spanning_trees),
                     'time' : end - start,
-                    'spanning_edge_betweenness_centrality' : spanning_edge_betweennes
+                    'spanning_edge_betweenness_centrality' : spanning_edge_betweennes,
+                    'vertex_degree_mul_to_edge' : vertex_degree_mul_to_edge,
+                    'vertex_degree_add_to_edge' : vertex_degree_add_to_edge
                 })
     
     create_csv(agl1_graph_data, 'algorithm_1', run_id, graph_type)

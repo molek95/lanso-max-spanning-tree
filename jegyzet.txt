@@ -5,7 +5,6 @@
 	-R-ben meg lehet mondani, hogy hány magon fusson
 	- független feladatok párhuzamosítása naív módon // pythonban megkeresni, hogy hogyan kell
 	-
--ember assembly paralell eset - különböző konfigurációk egymástól teljesen függetlenek
 -TU vonal:
 	* LP feladat: korlátozó feltétel rendszerben, ha Ax=b A egy TU mátrix, akkor az ILP-t ha relaxálom és megengedek nem egészértékű megoldást is (innentől
 		már nem LP), akkor a relaxált megoldás az egész értékű optimális megoldása lesz.
@@ -39,3 +38,7 @@ kedd 5 óra a kövi találka
 2020.07.10.
 -fákat vizsgáljunk erdős-rényi helyett
 -span = determináns * 1/csúcszám
+---------------------------------------------------------------------------------------------------------------
+2020.07.21.
+-élközpontiság: élnek 2 csúcsa van, csúcsok valami központiságának kombinációja (pl fokszámok szorzata -> él központisága)
+-
