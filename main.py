@@ -116,6 +116,9 @@ def create_csv(graph_data, path, run_id, graph_type):
     g_span_ebc = list()
     g_vertex_degree_mul_to_edge = list()
     g_vertex_degree_add_to_edge = list()
+    g_vertex_degree_mul_added_edges = list()
+    g_vertex_degree_add_added_edges = list()
+    g_span_ebc_new = list()
     
     
     for g_data in graph_data:
@@ -131,7 +134,10 @@ def create_csv(graph_data, path, run_id, graph_type):
         g_time.append(g_data['time'])
         g_span_ebc.append(g_data['spanning_edge_betweenness_centrality'])
         g_vertex_degree_mul_to_edge.append(g_data['vertex_degree_mul_to_edge'])
-        g_vertex_degree_add_to_edge.append(g_data['g_vertex_degree_add_to_edge'])
+        g_vertex_degree_add_to_edge.append(g_data['vertex_degree_add_to_edge'])
+        g_vertex_degree_mul_added_edges.append(g_data['vertex_degree_add_new'])
+        g_vertex_degree_add_added_edges.append(g_data['vertex_degree_mul_new'])
+        g_span_ebc_new.append(g_data['g_span_ebc_new'])
         
     df_graph_data = {
             'id' : g_index,
@@ -142,11 +148,15 @@ def create_csv(graph_data, path, run_id, graph_type):
             'complementer_edges' : g_complementer_edges,
             'betweenness_centrality (new edges)' : g_added_edges,
             'betweenness_centrality (all edges)' : g_all_edge_betweenness_centrality,
+            'vertex_degree_mul_to_edge (new edges)' : g_vertex_degree_mul_added_edges,
+            'vertex_degree_mul_to_edge (all edges)': g_vertex_degree_mul_to_edge,
+            'vertex_degree_add_to_edge (new edges)' : g_vertex_degree_add_added_edges,
+            'vertex_degree_add_to_edge (all edges)': g_vertex_degree_add_to_edge,
+            'spanning_edge_betweenness_centrality (new edges)': g_span_ebc_new,
+            'spanning_edge_betweenness_centrality (new edges)' : g_span_ebc_new,
+            'spanning_edge_betweenness_centrality (all edges)': g_span_ebc,
             'number_of_spanning_trees' : g_number_of_spanning_trees,
             'time': g_time,
-            'spanning_edge_betweenness_centrality': g_span_ebc,
-            'vertex_degree_mul_to_edge': g_vertex_degree_mul_to_edge,
-            'vertex_degree_add_to_edge': g_vertex_degree_add_to_edge
         }
     
     df = pd.DataFrame(df_graph_data)
@@ -186,6 +196,15 @@ def create_report(graph_container, fix_k, cpu_number, run_id, graph_type):
             new_edge_betweenness_centrality = [
                 (edge_key, edge_betweenness_centrality[edge_key]) for p_edge in p for edge_key in edge_betweenness_centrality.keys() if p_edge == edge_key
                 ]
+            vertex_degree_add_new = [
+                (edge_key, vertex_degree_add_to_edge[edge_key]) for p_edge in p for edge_key in vertex_degree_add_to_edge.keys() if p_edge == edge_key
+                ]
+            vertex_degree_mul_new = [
+                (edge_key, vertex_degree_mul_to_edge[edge_key]) for p_edge in p for edge_key in vertex_degree_mul_to_edge.keys() if p_edge == edge_key
+                ]
+            g_span_ebc_new = [
+                (edge_key, spanning_edge_betweennes[edge_key]) for p_edge in p for edge_key in spanning_edge_betweennes.keys() if p_edge == edge_key
+                ]
             end = time.time()
             agl1_graph_data.append({
                     'index' : index,
@@ -200,7 +219,10 @@ def create_report(graph_container, fix_k, cpu_number, run_id, graph_type):
                     'time' : end - start,
                     'spanning_edge_betweenness_centrality' : spanning_edge_betweennes,
                     'vertex_degree_mul_to_edge' : vertex_degree_mul_to_edge,
-                    'vertex_degree_add_to_edge' : vertex_degree_add_to_edge
+                    'vertex_degree_add_to_edge' : vertex_degree_add_to_edge,
+                    'vertex_degree_add_new': vertex_degree_add_new,
+                    'vertex_degree_mul_new': vertex_degree_mul_new,
+                    'g_span_ebc_new': g_span_ebc_new,
                 })
     
         for i in range(1, fix_k):
@@ -216,6 +238,15 @@ def create_report(graph_container, fix_k, cpu_number, run_id, graph_type):
             new_edge_betweenness_centrality = [
                 (edge_key, edge_betweenness_centrality[edge_key]) for p_edge in p for edge_key in edge_betweenness_centrality.keys() if p_edge == edge_key
                 ]
+            vertex_degree_add_new = [
+                (edge_key, vertex_degree_add_to_edge[edge_key]) for p_edge in p for edge_key in vertex_degree_add_to_edge.keys() if p_edge == edge_key
+                ]
+            vertex_degree_mul_new = [
+                (edge_key, vertex_degree_mul_to_edge[edge_key]) for p_edge in p for edge_key in vertex_degree_mul_to_edge.keys() if p_edge == edge_key
+                ]
+            g_span_ebc_new = [
+                (edge_key, spanning_edge_betweennes[edge_key]) for p_edge in p for edge_key in spanning_edge_betweennes.keys() if p_edge == edge_key
+                ]
             end = time.time()
             greedy_graph_data.append({
                     'index' : index,
@@ -230,7 +261,10 @@ def create_report(graph_container, fix_k, cpu_number, run_id, graph_type):
                     'time' : end - start,
                     'spanning_edge_betweenness_centrality' : spanning_edge_betweennes,
                     'vertex_degree_mul_to_edge' : vertex_degree_mul_to_edge,
-                    'vertex_degree_add_to_edge' : vertex_degree_add_to_edge
+                    'vertex_degree_add_to_edge' : vertex_degree_add_to_edge,
+                    'vertex_degree_add_new': vertex_degree_add_new,
+                    'vertex_degree_mul_new': vertex_degree_mul_new,
+                    'g_span_ebc_new': g_span_ebc_new,
                 })
             
         for i in range(1, fix_k):
@@ -253,6 +287,15 @@ def create_report(graph_container, fix_k, cpu_number, run_id, graph_type):
             new_edge_betweenness_centrality = [
                 (edge_key, edge_betweenness_centrality[edge_key]) for p_edge in p for edge_key in edge_betweenness_centrality.keys() if p_edge == edge_key
                 ]
+            vertex_degree_add_new = [
+                (edge_key, vertex_degree_add_to_edge[edge_key]) for p_edge in p for edge_key in vertex_degree_add_to_edge.keys() if p_edge == edge_key
+                ]
+            vertex_degree_mul_new = [
+                (edge_key, vertex_degree_mul_to_edge[edge_key]) for p_edge in p for edge_key in vertex_degree_mul_to_edge.keys() if p_edge == edge_key
+                ]
+            g_span_ebc_new = [
+                (edge_key, spanning_edge_betweennes[edge_key]) for p_edge in p for edge_key in spanning_edge_betweennes.keys() if p_edge == edge_key
+                ]
             end = time.time()
             enumeration_graph_data.append({
                     'index' : index,
@@ -267,7 +310,10 @@ def create_report(graph_container, fix_k, cpu_number, run_id, graph_type):
                     'time' : end - start,
                     'spanning_edge_betweenness_centrality' : spanning_edge_betweennes,
                     'vertex_degree_mul_to_edge' : vertex_degree_mul_to_edge,
-                    'vertex_degree_add_to_edge' : vertex_degree_add_to_edge
+                    'vertex_degree_add_to_edge' : vertex_degree_add_to_edge,
+                    'vertex_degree_add_new': vertex_degree_add_new,
+                    'vertex_degree_mul_new': vertex_degree_mul_new,
+                    'g_span_ebc_new': g_span_ebc_new,
                 })
     
     create_csv(agl1_graph_data, 'algorithm_1', run_id, graph_type)
@@ -299,7 +345,7 @@ if __name__ == "__main__":
     weight_list = [1 for i in range(upper_node_bound)]
     graph_container = list()
     tree_container = list()
-    
+    """
     for i in range(number_of_graphs):
         G = graph.generate_random_graph_with_unit_weight(randint(lower_node_bound, upper_node_bound), edge_probability)
         graph_container.append(G)
@@ -307,7 +353,7 @@ if __name__ == "__main__":
     
     #run_algorithms_and_generate_json_results(graph_container, fix_k, cpu_number)
     create_report(graph_container, fix_k, cpu_number, run_id, 'erdos-renyi')
-    
+    """
     for i in range(number_of_graphs):
         T = nx.random_tree(randint(lower_node_bound, upper_node_bound))
         tree_container.append(T)

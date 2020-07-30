@@ -9,19 +9,23 @@ Created on Thu Jul 23 15:34:13 2020
 import networkx as nx
 
 def degree_centrality_multiplication(G):
-    degree_centrality_to_edges = list()
+    degree_centrality_to_edges = dict()
     degree_centrality = nx.degree_centrality(G)
     for (u,v) in G.edges:
         edge_centrality = degree_centrality[u] * degree_centrality[v]
-        degree_centrality_to_edges.append({(u,v) : edge_centrality})    
+        #degree_centrality_to_edges.append(((u,v), edge_centrality))
+        edge = (u,v)
+        degree_centrality_to_edges[edge] = edge_centrality
     return degree_centrality_to_edges
 
 def degree_centrality_add(G):
-    degree_centrality_to_edges = list()
+    degree_centrality_to_edges = dict()
     degree_centrality = nx.degree_centrality(G)
     for (u,v) in G.edges:
         edge_centrality = degree_centrality[u] + degree_centrality[v]
-        degree_centrality_to_edges.append({(u,v) : edge_centrality})    
+        #degree_centrality_to_edges.append(((u,v), edge_centrality))
+        edge = (u,v)
+        degree_centrality_to_edges[edge] = edge_centrality
     return degree_centrality_to_edges
 
 """

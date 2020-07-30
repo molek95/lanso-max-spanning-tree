@@ -31,14 +31,15 @@ def find_all_spanning_trees(G, root=0):
     return [nx.from_edgelist(edges) for (nodes, edges) in solutions]
 
 def get_spanning_edge_betweenness(G, all_spanning_trees):
-    spanning_edge_betweenness_data = list()
+    spanning_edge_betweenness_data = dict()
     for edge in G.edges:
         edge_sp_counter = 0
         for span_tree in all_spanning_trees:
             if edge in span_tree.edges:
                 edge_sp_counter = edge_sp_counter + 1
         spanning_edge_betweennes = edge_sp_counter / len(all_spanning_trees)
-        spanning_edge_betweenness_data.append((edge, spanning_edge_betweennes))
+        #spanning_edge_betweenness_data.append((edge, spanning_edge_betweennes))
+        spanning_edge_betweenness_data[edge] = spanning_edge_betweennes
     return spanning_edge_betweenness_data
         
 """
