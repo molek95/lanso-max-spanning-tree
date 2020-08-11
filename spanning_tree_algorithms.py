@@ -71,6 +71,14 @@ def graph_enumeration(G, Q, k, cpu_number):
     max_number_of_spanning_tree = max_number_of_spanning_tree[::-1]
     return max_number_of_spanning_tree[0]
 
+def add_only_one_edge(G, Q):
+    graph_container = list()
+    for (u,v,w) in Q:
+        G_copy = G.copy()
+        G_copy.add_edge(u, v, weight = w)
+        graph_container.append((G_copy, (u,v,w)))
+    return graph_container
+    
 """
 def test_correct_edges(G, Q, k):
     max_number_of_spanning_tree = g.calculate_number_of_spanning_trees(G)

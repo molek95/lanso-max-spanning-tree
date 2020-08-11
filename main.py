@@ -345,7 +345,7 @@ if __name__ == "__main__":
     weight_list = [1 for i in range(upper_node_bound)]
     graph_container = list()
     tree_container = list()
-    """
+    
     for i in range(number_of_graphs):
         G = graph.generate_random_graph_with_unit_weight(randint(lower_node_bound, upper_node_bound), edge_probability)
         graph_container.append(G)
@@ -353,6 +353,7 @@ if __name__ == "__main__":
     
     #run_algorithms_and_generate_json_results(graph_container, fix_k, cpu_number)
     create_report(graph_container, fix_k, cpu_number, run_id, 'erdos-renyi')
+    
     """
     for i in range(number_of_graphs):
         T = nx.random_tree(randint(lower_node_bound, upper_node_bound))
@@ -360,3 +361,4 @@ if __name__ == "__main__":
         save_base_graphs(T, i, run_id, 'tree')
     
     create_report(tree_container, fix_k, cpu_number, run_id, 'tree')
+    """

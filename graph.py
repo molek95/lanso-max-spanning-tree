@@ -6,6 +6,15 @@ from scipy.sparse import csr_matrix
 import random
 from networkx.readwrite import json_graph
 import json
+import numpy as np
+
+
+def create_barabasi_albert_tree(N, weight_values=1):
+    t = nx.barabasi_albert_graph(N, 1)
+    for (u,v) in t.edges:
+        t[u][v]['weight'] = weight_values
+    return t
+    
 
 """
 Creates a star graph.
@@ -71,6 +80,15 @@ def calculate_number_of_spanning_trees(G):
     L = csr_matrix.todense(L)
     L1 = L[:-1,:-1]
     return round(linalg.det(L1))
+
+def eigenvalues_of_laplacian(G):
+    L = nx.laplacian_matrix(G)
+    L = csr_matrix.todense(L)
+    eigenValues, eigenVectors = np.linalg.eig(L)
+    idx = eigenValues.argsort()[::-1]
+    eigenValues = eigenValues[idx]
+    #eigenVectors = eigenVectors[:,idx]
+    return eigenValues
 
 def draw(G):
     elarge = [(u,v) for (u,v,d) in G.edges(data=True) if d['weight'] > 0.5]
