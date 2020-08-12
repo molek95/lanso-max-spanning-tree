@@ -28,6 +28,24 @@ def degree_centrality_add(G):
         degree_centrality_to_edges[edge] = edge_centrality
     return degree_centrality_to_edges
 
+def eigenvector_centrality_mul(G):
+    eigenvector_centrality_to_edges = dict()
+    eigenvector_centrality = nx.eigenvector_centrality(G)
+    for (u,v) in G.edges:
+        edge_centrality = eigenvector_centrality[u] * eigenvector_centrality[v]
+        edge = (u,v)
+        eigenvector_centrality_to_edges[edge] = edge_centrality
+    return eigenvector_centrality_to_edges
+
+def eigenvector_centrality_add(G):
+    eigenvector_centrality_to_edges = dict()
+    eigenvector_centrality = nx.eigenvector_centrality(G)
+    for (u,v) in G.edges:
+        edge_centrality = eigenvector_centrality[u] + eigenvector_centrality[v]
+        edge = (u,v)
+        eigenvector_centrality_to_edges[edge] = edge_centrality
+    return eigenvector_centrality_to_edges
+
 """
 N = 5
 G = nx.Graph()
