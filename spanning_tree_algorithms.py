@@ -78,7 +78,26 @@ def add_only_one_edge(G, Q):
         G_copy.add_edge(u, v, weight = w)
         graph_container.append((G_copy, (u,v,w)))
     return graph_container
-    
+
+def span_with_degree_mul_centrality(G, Q, k=1):
+    degree_container = list()
+    min_degree_nodes_container = list()
+    potential_edge_container = list()
+    for node in G.nodes:
+        degree_container.append((node, G.degree[node]))
+    degree_container.sort(key=lambda x:x[1])
+    for min_degree_nodes in degree_container:
+        if min_degree_nodes[1] == degree_container[0][1]:
+            min_degree_nodes_container.append(min_degree_nodes[0])
+    #print('min_degree_nodes_container', min_degree_nodes_container)
+    for (u,v,w) in Q:
+        if u in min_degree_nodes_container and v in min_degree_nodes_container:
+            potential_edge_container.append((u,v, 1))
+    #print('potential_edge_container', potential_edge_container)
+    print('len(Q)', len(Q))
+    print('len(potential_edge_container)', len(potential_edge_container))
+    return potential_edge_container
+
 """
 def test_correct_edges(G, Q, k):
     max_number_of_spanning_tree = g.calculate_number_of_spanning_trees(G)
