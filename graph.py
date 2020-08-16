@@ -16,6 +16,12 @@ def create_barabasi_albert_tree(N, weight_values=1):
     return t
     
 
+def create_barabasi_albert_graph(n, m, weight_values=1):
+    g = nx.barabasi_albert_graph(n, m)
+    for (u,v) in g.edges:
+        g[u][v]['weight'] = weight_values
+    return g
+
 """
 Creates a star graph.
 @params:

@@ -43,7 +43,30 @@ def eigenvalue_report(graph_container, run_id):
     if not os.path.exists('tree_with_one_added/' + str(run_id)):
         os.makedirs('tree_with_one_added/' + str(run_id))
     df.to_csv('./tree_with_one_added/' + str(run_id) + '/' + 'eigenvalues.csv', index=False)
-        
+
+def largest_two_eigenvalues_and_span_reprort(graph_container, run_id):
+    largest_eigenvalue = list()
+    second_largest_eigenvalue = list()
+    span_trees = list()
+    for g in graph_container:
+        eigenv = graph.eigenvalues_of_laplacian(g[0])
+        num_of_span = graph.calculate_number_of_spanning_trees(g[0])
+        largest_eigenvalue.append(eigenv[0])
+        second_largest_eigenvalue.append(eigenv[1])
+        span_trees.append(num_of_span)
+    
+    report_data = {
+        'eigenvalue_1': largest_eigenvalue,
+        'eigenvalue_2': second_largest_eigenvalue,
+        'span_trees': span_trees
+    }
+    
+    df = pd.DataFrame(report_data)
+    if not os.path.exists('tree_with_one_added'):
+        os.makedirs('tree_with_one_added')
+    if not os.path.exists('tree_with_one_added/' + str(run_id)):
+        os.makedirs('tree_with_one_added/' + str(run_id))
+    df.to_csv('./tree_with_one_added/' + str(run_id) + '/' + 'largest_eigenvalues.csv', index=False)
 
 def scatterplot_for_degree_mul_centrality_and_span(graph_container, run_id):
     edge_centrality = list()
@@ -137,8 +160,7 @@ def scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, run_id)
     if not os.path.exists('tree_with_one_added/' + str(run_id)):
         os.makedirs('tree_with_one_added/' + str(run_id))
     plt.savefig('tree_with_one_added/' + str(run_id) + '/' + 'eigenvector_mul_cte.png')
-    plt.clf()
-
+    plt.clf()    
 
 for i in range(10):
     t = graph.create_barabasi_albert_tree(15)
@@ -147,6 +169,7 @@ for i in range(10):
     dif = graph.difference(g_comp, t).edges(data='weight', default=1)
     graph_container = st_alg.add_only_one_edge(t, dif)
     eigenvalue_report(graph_container, i)
+    largest_two_eigenvalues_and_span_reprort(graph_container, i)
     scatterplot_for_degree_mul_centrality_and_span(graph_container, i)
     scatterplot_for_degree_add_centrality_and_span(graph_container, i)
     scatterplot_for_eigenvector_add_centrality_and_span(graph_container, i)
