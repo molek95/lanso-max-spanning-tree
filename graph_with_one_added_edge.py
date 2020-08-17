@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import vertex_centrality_to_edge as vertex_cte
 import os
 
-def eigenvalue_report(graph_container, run_id):
+def eigenvalue_report(graph_container, run_id, title):
     edges = list()
     eigenvalues = list()
     span_trees = list()
@@ -35,13 +35,15 @@ def eigenvalue_report(graph_container, run_id):
     }
     
     df = pd.DataFrame(report_data)
-    if not os.path.exists('graph_with_one_added'):
-        os.makedirs('graph_with_one_added')
-    if not os.path.exists('graph_with_one_added/' + str(run_id)):
-        os.makedirs('graph_with_one_added/' + str(run_id))
-    df.to_csv('./graph_with_one_added/' + str(run_id) + '/' + 'eigenvalues.csv', index=False)
+    if not os.path.exists('graph_with_one_added_potential_edge'):
+        os.makedirs('graph_with_one_added_potential_edge')
+    if not os.path.exists('graph_with_one_added_potential_edge/' + str(run_id)):
+        os.makedirs('graph_with_one_added_potential_edge/' + str(run_id))
+    if not os.path.exists('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title)):
+        os.makedirs('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title))
+    df.to_csv('./graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title) + '/' + 'eigenvalues.csv', index=False)
 
-def largest_two_eigenvalues_and_span_reprort(graph_container, run_id):
+def largest_two_eigenvalues_and_span_reprort(graph_container, run_id, title):
     largest_eigenvalue = list()
     second_largest_eigenvalue = list()
     span_trees = list()
@@ -59,13 +61,15 @@ def largest_two_eigenvalues_and_span_reprort(graph_container, run_id):
     }
     
     df = pd.DataFrame(report_data)
-    if not os.path.exists('graph_with_one_added'):
-        os.makedirs('graph_with_one_added')
-    if not os.path.exists('graph_with_one_added/' + str(run_id)):
-        os.makedirs('graph_with_one_added/' + str(run_id))
-    df.to_csv('./graph_with_one_added/' + str(run_id) + '/' + 'largest_eigenvalues.csv', index=False)
+    if not os.path.exists('graph_with_one_added_potential_edge'):
+        os.makedirs('graph_with_one_added_potential_edge')
+    if not os.path.exists('graph_with_one_added_potential_edge/' + str(run_id)):
+        os.makedirs('graph_with_one_added_potential_edge/' + str(run_id))
+    if not os.path.exists('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title)):
+        os.makedirs('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title))
+    df.to_csv('./graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title) + '/' + 'largest_eigenvalues.csv', index=False)
 
-def scatterplot_for_degree_mul_centrality_and_span(graph_container, run_id):
+def scatterplot_for_degree_mul_centrality_and_span(graph_container, run_id, title):
     edge_centrality = list()
     span_number = list()
     for g in graph_container:
@@ -81,14 +85,16 @@ def scatterplot_for_degree_mul_centrality_and_span(graph_container, run_id):
     area = (30 * np.random.rand(len(graph_container)))
     plt.scatter(cent, span, s=area, c=colors, alpha=0.5)
     #plt.show()
-    if not os.path.exists('graph_with_one_added'):
-        os.makedirs('graph_with_one_added')
-    if not os.path.exists('graph_with_one_added/' + str(run_id)):
-        os.makedirs('graph_with_one_added/' + str(run_id))
-    plt.savefig('graph_with_one_added/' + str(run_id) + '/' + 'degree_mul_cte.png')
+    if not os.path.exists('graph_with_one_added_potential_edge'):
+        os.makedirs('graph_with_one_added_potential_edge')
+    if not os.path.exists('graph_with_one_added_potential_edge/' + str(run_id)):
+        os.makedirs('graph_with_one_added_potential_edge/' + str(run_id))
+    if not os.path.exists('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title)):
+        os.makedirs('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title))
+    plt.savefig('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title) + '/' + 'degree_mul_cte.png')
     plt.clf()
     
-def scatterplot_for_degree_add_centrality_and_span(graph_container, run_id):
+def scatterplot_for_degree_add_centrality_and_span(graph_container, run_id, title):
     edge_centrality = list()
     span_number = list()
     for g in graph_container:
@@ -104,15 +110,17 @@ def scatterplot_for_degree_add_centrality_and_span(graph_container, run_id):
     area = (30 * np.random.rand(len(graph_container)))
     plt.scatter(cent, span, s=area, c=colors, alpha=0.5)
     #plt.show()
-    if not os.path.exists('graph_with_one_added'):
-        os.makedirs('graph_with_one_added')
-    if not os.path.exists('graph_with_one_added/' + str(run_id)):
-        os.makedirs('graph_with_one_added/' + str(run_id))
-    plt.savefig('graph_with_one_added/' + str(run_id) + '/' + 'degree_add_cte.png')
+    if not os.path.exists('graph_with_one_added_potential_edge'):
+        os.makedirs('graph_with_one_added_potential_edge')
+    if not os.path.exists('graph_with_one_added_potential_edge/' + str(run_id)):
+        os.makedirs('graph_with_one_added_potential_edge/' + str(run_id))
+    if not os.path.exists('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title)):
+        os.makedirs('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title))
+    plt.savefig('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title) + '/' + 'degree_add_cte.png')
     plt.clf()
 
 
-def scatterplot_for_eigenvector_add_centrality_and_span(graph_container, run_id):
+def scatterplot_for_eigenvector_add_centrality_and_span(graph_container, run_id, title):
     edge_centrality = list()
     span_number = list()
     for g in graph_container:
@@ -128,15 +136,17 @@ def scatterplot_for_eigenvector_add_centrality_and_span(graph_container, run_id)
     area = (30 * np.random.rand(len(graph_container)))
     plt.scatter(cent, span, s=area, c=colors, alpha=0.5)
     #plt.show()
-    if not os.path.exists('graph_with_one_added'):
-        os.makedirs('graph_with_one_added')
-    if not os.path.exists('graph_with_one_added/' + str(run_id)):
-        os.makedirs('graph_with_one_added/' + str(run_id))
-    plt.savefig('graph_with_one_added/' + str(run_id) + '/' + 'eigenvector_add_cte.png')
+    if not os.path.exists('graph_with_one_added_potential_edge'):
+        os.makedirs('graph_with_one_added_potential_edge')
+    if not os.path.exists('graph_with_one_added_potential_edge/' + str(run_id)):
+        os.makedirs('graph_with_one_added_potential_edge/' + str(run_id))
+    if not os.path.exists('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title)):
+        os.makedirs('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title))
+    plt.savefig('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title) + '/' + 'eigenvector_add_cte.png')
     plt.clf()
 
 
-def scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, run_id):
+def scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, run_id, title):
     edge_centrality = list()
     span_number = list()
     for g in graph_container:
@@ -152,11 +162,13 @@ def scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, run_id)
     area = (30 * np.random.rand(len(graph_container)))
     plt.scatter(cent, span, s=area, c=colors, alpha=0.5)
     #plt.show()
-    if not os.path.exists('graph_with_one_added'):
-        os.makedirs('graph_with_one_added')
-    if not os.path.exists('graph_with_one_added/' + str(run_id)):
-        os.makedirs('graph_with_one_added/' + str(run_id))
-    plt.savefig('graph_with_one_added/' + str(run_id) + '/' + 'eigenvector_mul_cte.png')
+    if not os.path.exists('graph_with_one_added_potential_edge'):
+        os.makedirs('graph_with_one_added_potential_edge')
+    if not os.path.exists('graph_with_one_added_potential_edge/' + str(run_id)):
+        os.makedirs('graph_with_one_added_potential_edge/' + str(run_id))
+    if not os.path.exists('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title)):
+        os.makedirs('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title))
+    plt.savefig('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title) + '/' + 'eigenvector_mul_cte.png')
     plt.clf()
 
 
@@ -165,11 +177,22 @@ for i in range(10):
     n = len(t.nodes())
     g_comp = graph.fully_connected_graph_from_list(n)
     dif = graph.difference(g_comp, t).edges(data='weight', default=1)
+    
+    potential_edges = st_alg.span_with_degree_mul_centrality(t,dif)
+    
     graph_container = st_alg.add_only_one_edge(t, dif)
-    eigenvalue_report(graph_container, i)
-    largest_two_eigenvalues_and_span_reprort(graph_container, i)
-    scatterplot_for_degree_mul_centrality_and_span(graph_container, i)
-    scatterplot_for_degree_add_centrality_and_span(graph_container, i)
-    scatterplot_for_eigenvector_add_centrality_and_span(graph_container, i)
-    scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, i)
+    eigenvalue_report(graph_container, i, 'all_edges')
+    largest_two_eigenvalues_and_span_reprort(graph_container, i, 'all_edges')
+    scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'all_edges')
+    scatterplot_for_degree_add_centrality_and_span(graph_container, i, 'all_edges')
+    #scatterplot_for_eigenvector_add_centrality_and_span(graph_container, i, 'all_edges')
+    #scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, i, 'all_edges')
+    
+    graph_container = st_alg.add_only_one_edge(t, potential_edges)
+    eigenvalue_report(graph_container, i, 'potential_edges')
+    largest_two_eigenvalues_and_span_reprort(graph_container, i, 'potential_edges')
+    scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'potential_edges')
+    scatterplot_for_degree_add_centrality_and_span(graph_container, i, 'potential_edges')
+    #scatterplot_for_eigenvector_add_centrality_and_span(graph_container, i, 'potential_edges')
+    #scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, i, 'potential_edges')
 
