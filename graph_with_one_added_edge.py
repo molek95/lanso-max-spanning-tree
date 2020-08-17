@@ -69,7 +69,7 @@ def largest_two_eigenvalues_and_span_reprort(graph_container, run_id, title):
         os.makedirs('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title))
     df.to_csv('./graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title) + '/' + 'largest_eigenvalues.csv', index=False)
 
-def scatterplot_for_degree_mul_centrality_and_span(graph_container, run_id, title):
+def scatterplot_for_degree_mul_centrality_and_span(graph_container, run_id, title, total_edges):
     edge_centrality = list()
     span_number = list()
     for g in graph_container:
@@ -84,6 +84,9 @@ def scatterplot_for_degree_mul_centrality_and_span(graph_container, run_id, titl
     colors = np.random.rand(len(graph_container))
     area = (30 * np.random.rand(len(graph_container)))
     plt.scatter(cent, span, s=area, c=colors, alpha=0.5)
+    plt.xlabel('Degree mul centrality')
+    plt.ylabel('Number of span')
+    plt.title('Edges: ' + str(total_edges))
     #plt.show()
     if not os.path.exists('graph_with_one_added_potential_edge'):
         os.makedirs('graph_with_one_added_potential_edge')
@@ -94,7 +97,7 @@ def scatterplot_for_degree_mul_centrality_and_span(graph_container, run_id, titl
     plt.savefig('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title) + '/' + 'degree_mul_cte.png')
     plt.clf()
     
-def scatterplot_for_degree_add_centrality_and_span(graph_container, run_id, title):
+def scatterplot_for_degree_add_centrality_and_span(graph_container, run_id, title, total_edges):
     edge_centrality = list()
     span_number = list()
     for g in graph_container:
@@ -109,6 +112,9 @@ def scatterplot_for_degree_add_centrality_and_span(graph_container, run_id, titl
     colors = np.random.rand(len(graph_container))
     area = (30 * np.random.rand(len(graph_container)))
     plt.scatter(cent, span, s=area, c=colors, alpha=0.5)
+    plt.xlabel('Degree mul centrality')
+    plt.ylabel('Number of span')
+    plt.title('Edges: ' + str(total_edges))
     #plt.show()
     if not os.path.exists('graph_with_one_added_potential_edge'):
         os.makedirs('graph_with_one_added_potential_edge')
@@ -183,16 +189,16 @@ for i in range(10):
     graph_container = st_alg.add_only_one_edge(t, dif)
     eigenvalue_report(graph_container, i, 'all_edges')
     largest_two_eigenvalues_and_span_reprort(graph_container, i, 'all_edges')
-    scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'all_edges')
-    scatterplot_for_degree_add_centrality_and_span(graph_container, i, 'all_edges')
+    scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'all_edges', len(dif))
+    scatterplot_for_degree_add_centrality_and_span(graph_container, i, 'all_edges', len(dif))
     #scatterplot_for_eigenvector_add_centrality_and_span(graph_container, i, 'all_edges')
     #scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, i, 'all_edges')
     
     graph_container = st_alg.add_only_one_edge(t, potential_edges)
     eigenvalue_report(graph_container, i, 'potential_edges')
     largest_two_eigenvalues_and_span_reprort(graph_container, i, 'potential_edges')
-    scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'potential_edges')
-    scatterplot_for_degree_add_centrality_and_span(graph_container, i, 'potential_edges')
+    scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'potential_edges', len(potential_edges))
+    scatterplot_for_degree_add_centrality_and_span(graph_container, i, 'potential_edges', len(potential_edges))
     #scatterplot_for_eigenvector_add_centrality_and_span(graph_container, i, 'potential_edges')
     #scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, i, 'potential_edges')
 
