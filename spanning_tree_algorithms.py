@@ -109,3 +109,48 @@ def span_with_degree_mul_centrality(G, Q, k=1):
     #print('len(Q)', len(Q))
     #print('len(potential_edge_container)', len(potential_edge_container))
     return potential_edge_container
+
+def span_with_degree_mul_centrality_with_triangle_check(G, Q, k=1):
+    degree_container = list()
+    min_degree_nodes_container = list()
+    potential_edge_container = list()
+    min_degree_set = set()
+    for node in G.nodes:
+        degree_container.append((node, G.degree[node]))
+    degree_container.sort(key=lambda x:x[1])
+    #print(degree_container)
+    
+    for min_degree_nodes in degree_container:
+        if min_degree_nodes[1] == degree_container[0][1]:
+            min_degree_nodes_container.append(min_degree_nodes[0])
+            min_degree_set.add(degree_container[0][1])
+    if len(min_degree_nodes_container) == 1:
+        for min_degree_nodes in degree_container:
+            if min_degree_nodes[1] == degree_container[1][1]:
+                min_degree_nodes_container.append(min_degree_nodes[0])
+                min_degree_set.add(degree_container[1][1])
+    #print('min_degree_nodes_container', min_degree_nodes_container)
+    #print('min_degree_set', min_degree_set)
+    min_degree_list = list(min_degree_set)
+    for (u,v,w) in Q:
+        if u in min_degree_nodes_container and v in min_degree_nodes_container and (G.degree[u] == min_degree_list[0] or G.degree[v] == min_degree_list[0]):
+            potential_edge_container.append((u,v))
+    #print('potential_edge_container', potential_edge_container)
+        
+    #print('len(Q)', len(Q))
+    #print('len(potential_edge_container)', len(potential_edge_container))
+    triangle_check_for_potential_edges = list()
+    for (u,v) in potential_edge_container:
+        new_triangle = check_new_edge_forms_triangle(G, u, v)
+        if new_triangle:
+            triangle_check_for_potential_edges.append((u,v,1))
+    return triangle_check_for_potential_edges
+
+def check_new_edge_forms_triangle(G, u, v):
+    g_copy = G.copy()
+    u_triangle = nx.triangles(g_copy, u)
+    v_triangle = nx.triangles(g_copy, v)
+    g_copy.add_edge(u,v)
+    if nx.triangles(g_copy, u) > u_triangle or nx.triangles(g_copy, v) > v_triangle:
+        return False
+    return True

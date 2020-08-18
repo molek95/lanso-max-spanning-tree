@@ -208,6 +208,7 @@ for i in range(10):
     dif = graph.difference(g_comp, t).edges(data='weight', default=1)
     
     potential_edges = st_alg.span_with_degree_mul_centrality(t,dif)
+    triangle_check = st_alg.span_with_degree_mul_centrality_with_triangle_check(t,dif)
     
     graph_container = st_alg.add_only_one_edge(t, dif)
     eigenvalue_report(graph_container, i, 'all_edges')
@@ -224,4 +225,10 @@ for i in range(10):
     scatterplot_for_degree_add_centrality_and_span(graph_container, i, 'potential_edges', len(potential_edges))
     #scatterplot_for_eigenvector_add_centrality_and_span(graph_container, i, 'potential_edges')
     #scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, i, 'potential_edges')
+    
+    graph_container = st_alg.add_only_one_edge(t, triangle_check)
+    eigenvalue_report(graph_container, i, 'triangle_check')
+    largest_two_eigenvalues_and_span_reprort(graph_container, i, 'triangle_check')
+    scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'triangle_check', len(triangle_check))
+    scatterplot_for_degree_add_centrality_and_span(graph_container, i, 'triangle_check', len(triangle_check))
 
