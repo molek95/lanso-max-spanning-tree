@@ -8,14 +8,13 @@ Created on Tue Aug 11 11:43:10 2020
 
 
 import spanning_tree_algorithms as st_alg
-import networkx as nx
 import graph
-from random import randint
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import vertex_centrality_to_edge as vertex_cte
 import os
+import seaborn as sns
 
 def eigenvalue_report(graph_container, run_id, title):
     edges = list()
@@ -72,22 +71,30 @@ def largest_two_eigenvalues_and_span_reprort(graph_container, run_id, title):
         os.makedirs('tree_with_one_added/' + str(run_id) + '/' + str(title))
     df.to_csv('./tree_with_one_added/' + str(run_id) + '/' + str(title) + '/' + 'largest_eigenvalues.csv', index=False)
 
-def scatterplot_for_degree_mul_centrality_and_span(graph_container, run_id, title):
+def scatterplot_for_degree_mul_centrality_and_span(graph_container, run_id, title, total_edges):
     edge_centrality = list()
     span_number = list()
     for g in graph_container:
         g_copy = g[0].copy()
         centrality = vertex_cte.degree_centrality_multiplication(g_copy)
-        current_centrality = [(centrality[(u,v)]) for (u,v) in g_copy.edges() if u == g[1][0] and v == g[1][1]]
+        current_centrality = [round(centrality[(u,v)], 4) for (u,v) in g_copy.edges() if u == g[1][0] and v == g[1][1]]
         num_of_span = graph.calculate_number_of_spanning_trees(g_copy)
         edge_centrality.append(current_centrality)
         span_number.append(num_of_span)
-    cent = np.array(edge_centrality)
-    span = np.array(span_number)
-    colors = np.random.rand(len(graph_container))
-    area = (30 * np.random.rand(len(graph_container)))
-    plt.scatter(cent, span, s=area, c=colors, alpha=0.5)
-    #plt.show()
+    
+    df = pd.DataFrame()
+    df['centrality'] = np.array(edge_centrality)[:,0]
+    df['span'] = np.array(span_number)
+    
+    fig = plt.gcf()
+    fig.set_size_inches(11.7, 8.27)
+    sns.set(style="white", color_codes=True)
+    sns.stripplot(x='centrality', y='span', data=df, jitter=0.5, palette="Set2", dodge=True, linewidth=1, edgecolor='gray')
+    
+    plt.xlabel('Degree mul centrality')
+    plt.ylabel('Number of span')
+    plt.title('Edges: ' + str(total_edges))
+    
     if not os.path.exists('tree_with_one_added'):
         os.makedirs('tree_with_one_added')
     if not os.path.exists('tree_with_one_added/' + str(run_id)):
@@ -97,22 +104,30 @@ def scatterplot_for_degree_mul_centrality_and_span(graph_container, run_id, titl
     plt.savefig('tree_with_one_added/' + str(run_id) + '/' + str(title) + '/' + 'degree_mul_cte.png')
     plt.clf()
     
-def scatterplot_for_degree_add_centrality_and_span(graph_container, run_id, title):
+def scatterplot_for_degree_add_centrality_and_span(graph_container, run_id, title, total_edges):
     edge_centrality = list()
     span_number = list()
     for g in graph_container:
         g_copy = g[0].copy()
         centrality = vertex_cte.degree_centrality_add(g_copy)
-        current_centrality = [(centrality[(u,v)]) for (u,v) in g_copy.edges() if u == g[1][0] and v == g[1][1]]
+        current_centrality = [round(centrality[(u,v)], 4) for (u,v) in g_copy.edges() if u == g[1][0] and v == g[1][1]]
         num_of_span = graph.calculate_number_of_spanning_trees(g_copy)
         edge_centrality.append(current_centrality)
         span_number.append(num_of_span)
-    cent = np.array(edge_centrality)
-    span = np.array(span_number)
-    colors = np.random.rand(len(graph_container))
-    area = (30 * np.random.rand(len(graph_container)))
-    plt.scatter(cent, span, s=area, c=colors, alpha=0.5)
-    #plt.show()
+    
+    df = pd.DataFrame()
+    df['centrality'] = np.array(edge_centrality)[:,0]
+    df['span'] = np.array(span_number)
+    
+    fig = plt.gcf()
+    fig.set_size_inches(11.7, 8.27)
+    sns.set(style="white", color_codes=True)
+    sns.stripplot(x='centrality', y='span', data=df, jitter=0.5, palette="Set2", dodge=True, linewidth=1, edgecolor='gray')
+    
+    plt.xlabel('Degree mul centrality')
+    plt.ylabel('Number of span')
+    plt.title('Edges: ' + str(total_edges))
+    
     if not os.path.exists('tree_with_one_added'):
         os.makedirs('tree_with_one_added')
     if not os.path.exists('tree_with_one_added/' + str(run_id)):
@@ -122,7 +137,7 @@ def scatterplot_for_degree_add_centrality_and_span(graph_container, run_id, titl
     plt.savefig('tree_with_one_added/' + str(run_id) + '/' + str(title) + '/' + 'degree_add_cte.png')
     plt.clf()
 
-
+"""
 def scatterplot_for_eigenvector_add_centrality_and_span(graph_container, run_id, title):
     edge_centrality = list()
     span_number = list()
@@ -173,7 +188,7 @@ def scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, run_id,
         os.makedirs('tree_with_one_added/' + str(run_id) + '/' + str(title))
     plt.savefig('tree_with_one_added/' + str(run_id) + '/' + str(title) + '/' + 'eigenvector_mul_cte.png')
     plt.clf()    
-
+"""
 for i in range(10):
     t = graph.create_barabasi_albert_tree(15)
     n = len(t.nodes())
@@ -185,16 +200,16 @@ for i in range(10):
     graph_container = st_alg.add_only_one_edge(t, dif)
     eigenvalue_report(graph_container, i, 'all_edges')
     largest_two_eigenvalues_and_span_reprort(graph_container, i, 'all_edges')
-    scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'all_edges')
-    scatterplot_for_degree_add_centrality_and_span(graph_container, i, 'all_edges')
+    scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'all_edges', len(dif))
+    scatterplot_for_degree_add_centrality_and_span(graph_container, i, 'all_edges', len(dif))
     #scatterplot_for_eigenvector_add_centrality_and_span(graph_container, i, 'all_edges')
     #scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, i, 'all_edges')
     
     graph_container = st_alg.add_only_one_edge(t, potential_edges)
     eigenvalue_report(graph_container, i, 'potential_edges')
     largest_two_eigenvalues_and_span_reprort(graph_container, i, 'potential_edges')
-    scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'potential_edges')
-    scatterplot_for_degree_add_centrality_and_span(graph_container, i, 'potential_edges')
+    scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'potential_edges', len(potential_edges))
+    scatterplot_for_degree_add_centrality_and_span(graph_container, i, 'potential_edges', len(potential_edges))
     #scatterplot_for_eigenvector_add_centrality_and_span(graph_container, i, 'potential_edges')
     #scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, i, 'potential_edges')
 

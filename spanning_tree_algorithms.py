@@ -83,35 +83,29 @@ def span_with_degree_mul_centrality(G, Q, k=1):
     degree_container = list()
     min_degree_nodes_container = list()
     potential_edge_container = list()
+    min_degree_set = set()
     for node in G.nodes:
         degree_container.append((node, G.degree[node]))
     degree_container.sort(key=lambda x:x[1])
+    #print(degree_container)
+    
     for min_degree_nodes in degree_container:
         if min_degree_nodes[1] == degree_container[0][1]:
             min_degree_nodes_container.append(min_degree_nodes[0])
+            min_degree_set.add(degree_container[0][1])
+    if len(min_degree_nodes_container) == 1:
+        for min_degree_nodes in degree_container:
+            if min_degree_nodes[1] == degree_container[1][1]:
+                min_degree_nodes_container.append(min_degree_nodes[0])
+                min_degree_set.add(degree_container[1][1])
     #print('min_degree_nodes_container', min_degree_nodes_container)
+    #print('min_degree_set', min_degree_set)
+    min_degree_list = list(min_degree_set)
     for (u,v,w) in Q:
-        if u in min_degree_nodes_container and v in min_degree_nodes_container:
+        if u in min_degree_nodes_container and v in min_degree_nodes_container and (G.degree[u] == min_degree_list[0] or G.degree[v] == min_degree_list[0]):
             potential_edge_container.append((u,v, 1))
     #print('potential_edge_container', potential_edge_container)
-    print('len(Q)', len(Q))
-    print('len(potential_edge_container)', len(potential_edge_container))
+        
+    #print('len(Q)', len(Q))
+    #print('len(potential_edge_container)', len(potential_edge_container))
     return potential_edge_container
-
-"""
-def test_correct_edges(G, Q, k):
-    max_number_of_spanning_tree = g.calculate_number_of_spanning_trees(G)
-    edge_combination = itertools.combinations(Q, k)
-    best_edges = set()
-    for edge in edge_combination:
-        G_copy = G.copy(G)
-        for (u,v,w) in edge:
-            G_copy.add_edge(u,v, weight=w)
-        number_of_spanning_tree = g.calculate_number_of_spanning_trees(G_copy)
-        if (number_of_spanning_tree > max_number_of_spanning_tree):
-            max_number_of_spanning_tree = number_of_spanning_tree
-            best_edges.clear()
-            best_edges.add(edge)
-    print('test_correct_edges_ Maximum spanning tree when k =', k, ' is: ', max_number_of_spanning_tree)
-    return (max_number_of_spanning_tree, best_edges)
-"""
