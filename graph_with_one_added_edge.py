@@ -15,7 +15,8 @@ import vertex_centrality_to_edge as vertex_cte
 import os
 import seaborn as sns
 from shutil import copyfile
-
+import gershgorin
+import networkx as nx
 
 
 def eigenvalue_report(graph_container, run_id, title):
@@ -261,6 +262,11 @@ for i in range(10):
     graph_container_copy = graph_container.copy()
     graph_container_copy.insert(0, (t, 'base'))
     
+    for index, G in enumerate(graph_container_copy):
+        L = nx.laplacian_matrix(G[0]).toarray()
+        gersh = gershgorin.GregsCircles(L)
+        gershgorin.plotCircles(gersh, i, 'all_edges', index)
+    
     eigenvalue_report(graph_container_copy, i, 'all_edges')
     largest_two_eigenvalues_and_span_reprort(graph_container, i, 'all_edges')
     scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'all_edges', len(dif))
@@ -269,6 +275,16 @@ for i in range(10):
     #scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, i, 'all_edges')
     
     graph_container = st_alg.add_only_one_edge(t, potential_edges)
+    graph_container_copy = graph_container.copy()
+    graph_container_copy.insert(0, (t, 'base'))
+
+
+    for index, G in enumerate(graph_container_copy):
+        L = nx.laplacian_matrix(G[0]).toarray()
+        gersh = gershgorin.GregsCircles(L)
+        gershgorin.plotCircles(gersh, i, 'potential_edges', index)
+        
+        
     eigenvalue_report(graph_container_copy, i, 'potential_edges')
     largest_two_eigenvalues_and_span_reprort(graph_container, i, 'potential_edges')
     scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'potential_edges', len(potential_edges))
@@ -277,6 +293,16 @@ for i in range(10):
     #scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, i, 'potential_edges')
     
     graph_container = st_alg.add_only_one_edge(t, triangle_check)
+    graph_container_copy = graph_container.copy()
+    graph_container_copy.insert(0, (t, 'base'))
+
+
+    for index, G in enumerate(graph_container_copy):
+        L = nx.laplacian_matrix(G[0]).toarray()
+        gersh = gershgorin.GregsCircles(L)
+        gershgorin.plotCircles(gersh, i, 'triangle_check', index)
+        
+        
     eigenvalue_report(graph_container_copy, i, 'triangle_check')
     largest_two_eigenvalues_and_span_reprort(graph_container, i, 'triangle_check')
     scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'triangle_check', len(triangle_check))
