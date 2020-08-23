@@ -17,27 +17,71 @@ import seaborn as sns
 from shutil import copyfile
 
 
+
 def eigenvalue_report(graph_container, run_id, title):
     edges = list()
-    eigenvalues = list()
     span_trees = list()
     new_edge = list()
+    eigenv_1 = list()
+    eigenv_2 = list()
+    eigenv_3 = list()
+    eigenv_4 = list()
+    eigenv_5 = list()
+    eigenv_6 = list()
+    eigenv_7 = list()
+    eigenv_8 = list()
+    eigenv_9 = list()
+    eigenv_10 = list()
+    eigenv_11 = list()
+    eigenv_12 = list()
+    eigenv_13 = list()
+    eigenv_14 = list()
+    eigenv_15 = list()
     for g in graph_container:
         eigenv = graph.eigenvalues_of_laplacian(g[0])
         num_of_span = graph.calculate_number_of_spanning_trees(g[0])
         edges.append(g[0].edges())
-        eigenvalues.append(eigenv)
+        eigenv_1.append(eigenv[0].real)
+        eigenv_2.append(eigenv[1].real)
+        eigenv_3.append(eigenv[2].real)
+        eigenv_4.append(eigenv[3].real)
+        eigenv_5.append(eigenv[4].real)
+        eigenv_6.append(eigenv[5].real)
+        eigenv_7.append(eigenv[6].real)
+        eigenv_8.append(eigenv[7].real)
+        eigenv_9.append(eigenv[8].real)
+        eigenv_10.append(eigenv[9].real)
+        eigenv_11.append(eigenv[10].real)
+        eigenv_12.append(eigenv[11].real)
+        eigenv_13.append(eigenv[12].real)
+        eigenv_14.append(eigenv[13].real)
+        eigenv_15.append(eigenv[14].real)
         span_trees.append(num_of_span)
         new_edge.append(g[1])
     
     report_data = {
         'added': new_edge,
         'edges': edges,
-        'eigenvalues': eigenvalues,
+        'eigenv_1': eigenv_1,
+        'eigenv_2': eigenv_2,
+        'eigenv_3': eigenv_3,
+        'eigenv_4': eigenv_4,
+        'eigenv_5': eigenv_5,
+        'eigenv_6': eigenv_6,
+        'eigenv_7': eigenv_7,
+        'eigenv_8': eigenv_8,
+        'eigenv_9': eigenv_9,
+        'eigenv_10': eigenv_10,
+        'eigenv_11': eigenv_11,
+        'eigenv_12': eigenv_12,
+        'eigenv_13': eigenv_13,
+        'eigenv_14': eigenv_14,
+        'eigenv_15': eigenv_15,
         'span_trees': span_trees
     }
     
     df = pd.DataFrame(report_data)
+    
     if not os.path.exists('graph_with_one_added_potential_edge'):
         os.makedirs('graph_with_one_added_potential_edge')
     if not os.path.exists('graph_with_one_added_potential_edge/' + str(run_id)):
@@ -45,6 +89,7 @@ def eigenvalue_report(graph_container, run_id, title):
     if not os.path.exists('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title)):
         os.makedirs('graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title))
     df.to_csv('./graph_with_one_added_potential_edge/' + str(run_id) + '/' + str(title) + '/' + 'eigenvalues.csv', index=False)
+    
 
 def largest_two_eigenvalues_and_span_reprort(graph_container, run_id, title):
     largest_eigenvalue = list()
@@ -197,21 +242,26 @@ def scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, run_id,
 
 for i in range(10):
     t = graph.create_barabasi_albert_graph(15, 2)
+    
     if not os.path.exists('barabasi_albert_graph'):
         os.makedirs('barabasi_albert_graph')
     filename = 'barabasi_albert' + str(i) + '.json'
     graph.save_json(filename, t)
     copyfile(filename, './barabasi_albert_graph/' + filename)
     os.remove(filename)
+    
     n = len(t.nodes())
     g_comp = graph.fully_connected_graph_from_list(n)
     dif = graph.difference(g_comp, t).edges(data='weight', default=1)
     
     potential_edges = st_alg.span_with_degree_mul_centrality(t,dif)
     triangle_check = st_alg.span_with_degree_mul_centrality_with_triangle_check(t,dif)
-    
+        
     graph_container = st_alg.add_only_one_edge(t, dif)
-    eigenvalue_report(graph_container, i, 'all_edges')
+    graph_container_copy = graph_container.copy()
+    graph_container_copy.insert(0, (t, 'base'))
+    
+    eigenvalue_report(graph_container_copy, i, 'all_edges')
     largest_two_eigenvalues_and_span_reprort(graph_container, i, 'all_edges')
     scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'all_edges', len(dif))
     scatterplot_for_degree_add_centrality_and_span(graph_container, i, 'all_edges', len(dif))
@@ -219,7 +269,7 @@ for i in range(10):
     #scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, i, 'all_edges')
     
     graph_container = st_alg.add_only_one_edge(t, potential_edges)
-    eigenvalue_report(graph_container, i, 'potential_edges')
+    eigenvalue_report(graph_container_copy, i, 'potential_edges')
     largest_two_eigenvalues_and_span_reprort(graph_container, i, 'potential_edges')
     scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'potential_edges', len(potential_edges))
     scatterplot_for_degree_add_centrality_and_span(graph_container, i, 'potential_edges', len(potential_edges))
@@ -227,8 +277,8 @@ for i in range(10):
     #scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, i, 'potential_edges')
     
     graph_container = st_alg.add_only_one_edge(t, triangle_check)
-    eigenvalue_report(graph_container, i, 'triangle_check')
+    eigenvalue_report(graph_container_copy, i, 'triangle_check')
     largest_two_eigenvalues_and_span_reprort(graph_container, i, 'triangle_check')
     scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'triangle_check', len(triangle_check))
     scatterplot_for_degree_add_centrality_and_span(graph_container, i, 'triangle_check', len(triangle_check))
-
+    
