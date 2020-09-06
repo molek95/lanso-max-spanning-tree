@@ -241,7 +241,7 @@ def scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, run_id,
     plt.clf()
 """
 
-for i in range(10):
+for i in range(3):
     t = graph.create_barabasi_albert_graph(15, 2)
     
     if not os.path.exists('barabasi_albert_graph'):
@@ -264,6 +264,7 @@ for i in range(10):
     
     for index, G in enumerate(graph_container_copy):
         L = nx.laplacian_matrix(G[0]).toarray()
+        print(L)
         gersh = gershgorin.GregsCircles(L)
         gershgorin.plotCircles(gersh, i, 'all_edges', index)
     
