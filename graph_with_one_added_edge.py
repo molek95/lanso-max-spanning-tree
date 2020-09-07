@@ -17,6 +17,7 @@ import seaborn as sns
 from shutil import copyfile
 import gershgorin
 import networkx as nx
+import eigenvalue_bounds as eb
 
 
 def eigenvalue_report(graph_container, run_id, title):
@@ -38,6 +39,11 @@ def eigenvalue_report(graph_container, run_id, title):
     eigenv_13 = list()
     eigenv_14 = list()
     eigenv_15 = list()
+    lower_bound_largest_laplacian_eigenv = list()
+    lower_bound_second_largest_laplacian_eigenv = list()
+    lower_bound_second_smallest_laplacian_eigenv = list()
+    lower_bound_for_second_smallest_laplacian_eigenvalue_diam = list()
+    
     for g in graph_container:
         eigenv = graph.eigenvalues_of_laplacian(g[0])
         num_of_span = graph.calculate_number_of_spanning_trees(g[0])
@@ -59,6 +65,10 @@ def eigenvalue_report(graph_container, run_id, title):
         eigenv_15.append(eigenv[14].real)
         span_trees.append(num_of_span)
         new_edge.append(g[1])
+        lower_bound_largest_laplacian_eigenv.append(eb.lower_bound_for_largest_laplacian_eigenvalue(g[0]))
+        lower_bound_second_largest_laplacian_eigenv.append(eb.lower_bound_for_second_largest_laplacian_eigenvalue(g[0]))
+        lower_bound_second_smallest_laplacian_eigenv.append(eb.bound_for_second_smallest_laplacian_eigenvalue(g[0])[0])
+        lower_bound_for_second_smallest_laplacian_eigenvalue_diam.append(eb.lower_bound_for_second_smallest_laplacian_eigenvalue_diam(g[0]))
     
     report_data = {
         'added': new_edge,
@@ -78,7 +88,11 @@ def eigenvalue_report(graph_container, run_id, title):
         'eigenv_13': eigenv_13,
         'eigenv_14': eigenv_14,
         'eigenv_15': eigenv_15,
-        'span_trees': span_trees
+        'span_trees': span_trees,
+        'lower_bound_largest_laplacian_eigenv' : lower_bound_largest_laplacian_eigenv,
+        'lower_bound_second_largest_laplacian_eigenv': lower_bound_second_largest_laplacian_eigenv,
+        'lower_bound_second_smallest_laplacian_eigenv': lower_bound_second_smallest_laplacian_eigenv,
+        'lower_bound_for_second_smallest_laplacian_eigenvalue_diam': lower_bound_for_second_smallest_laplacian_eigenvalue_diam
     }
     
     df = pd.DataFrame(report_data)
@@ -241,7 +255,7 @@ def scatterplot_for_eigenvector_mul_centrality_and_span(graph_container, run_id,
     plt.clf()
 """
 
-for i in range(3):
+for i in range(10):
     t = graph.create_barabasi_albert_graph(15, 2)
     
     if not os.path.exists('barabasi_albert_graph'):
@@ -257,17 +271,18 @@ for i in range(3):
     
     potential_edges = st_alg.span_with_degree_mul_centrality(t,dif)
     triangle_check = st_alg.span_with_degree_mul_centrality_with_triangle_check(t,dif)
+    eigenv_check = st_alg.lowest_eigen_filter(t, dif)
         
     graph_container = st_alg.add_only_one_edge(t, dif)
     graph_container_copy = graph_container.copy()
     graph_container_copy.insert(0, (t, 'base'))
-    
+    """
     for index, G in enumerate(graph_container_copy):
         L = nx.laplacian_matrix(G[0]).toarray()
         print(L)
         gersh = gershgorin.GregsCircles(L)
         gershgorin.plotCircles(gersh, i, 'all_edges', index)
-    
+    """
     eigenvalue_report(graph_container_copy, i, 'all_edges')
     largest_two_eigenvalues_and_span_reprort(graph_container, i, 'all_edges')
     scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'all_edges', len(dif))
@@ -279,13 +294,13 @@ for i in range(3):
     graph_container_copy = graph_container.copy()
     graph_container_copy.insert(0, (t, 'base'))
 
-
+    """
     for index, G in enumerate(graph_container_copy):
         L = nx.laplacian_matrix(G[0]).toarray()
         gersh = gershgorin.GregsCircles(L)
         gershgorin.plotCircles(gersh, i, 'potential_edges', index)
         
-        
+    """    
     eigenvalue_report(graph_container_copy, i, 'potential_edges')
     largest_two_eigenvalues_and_span_reprort(graph_container, i, 'potential_edges')
     scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'potential_edges', len(potential_edges))
@@ -297,15 +312,30 @@ for i in range(3):
     graph_container_copy = graph_container.copy()
     graph_container_copy.insert(0, (t, 'base'))
 
-
+    """
     for index, G in enumerate(graph_container_copy):
         L = nx.laplacian_matrix(G[0]).toarray()
         gersh = gershgorin.GregsCircles(L)
         gershgorin.plotCircles(gersh, i, 'triangle_check', index)
-        
+    """    
         
     eigenvalue_report(graph_container_copy, i, 'triangle_check')
     largest_two_eigenvalues_and_span_reprort(graph_container, i, 'triangle_check')
     scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'triangle_check', len(triangle_check))
     scatterplot_for_degree_add_centrality_and_span(graph_container, i, 'triangle_check', len(triangle_check))
     
+    graph_container = st_alg.add_only_one_edge(t, eigenv_check)
+    graph_container_copy = graph_container.copy()
+    graph_container_copy.insert(0, (t, 'base'))
+
+    """
+    for index, G in enumerate(graph_container_copy):
+        L = nx.laplacian_matrix(G[0]).toarray()
+        gersh = gershgorin.GregsCircles(L)
+        gershgorin.plotCircles(gersh, i, 'triangle_check', index)
+    """    
+        
+    eigenvalue_report(graph_container_copy, i, 'eigenv_check')
+    largest_two_eigenvalues_and_span_reprort(graph_container, i, 'eigenv_check')
+    scatterplot_for_degree_mul_centrality_and_span(graph_container, i, 'eigenv_check', len(eigenv_check))
+    scatterplot_for_degree_add_centrality_and_span(graph_container, i, 'eigenv_check', len(eigenv_check))

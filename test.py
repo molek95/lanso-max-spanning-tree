@@ -10,9 +10,9 @@ import networkx as nx
 import graph
 import eigenvalue_bounds as eb
 
-t = graph.create_barabasi_albert_graph(10,2)
+t = graph.create_barabasi_albert_graph(15,2)
 #graph.draw(t)
-    
+""" 
 lb = eb.lower_bound_for_largest_laplacian_eigenvalue(t)
 print('lower bound: ', lb)
 lb2 = eb.lower_bound_for_second_largest_laplacian_eigenvalue(t)
@@ -27,5 +27,5 @@ n = len(t.nodes())
 g_comp = graph.fully_connected_graph_from_list(n)
 dif = graph.difference(g_comp, t).edges(data='weight', default=1)
 
-potential_edges = st_alg.span_with_degree_mul_centrality(t,dif)
-"""
+potential_edges = st_alg.lowest_eigen_filter(t,dif)
+print(potential_edges)

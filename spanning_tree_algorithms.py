@@ -3,6 +3,8 @@ import networkx as nx
 import graph as g
 import itertools
 import multiprocessing as mp
+import eigenvalue_bounds as eb
+
 
 def algorithm_1(G, Q, e, k):
     q = len(Q)
@@ -154,3 +156,18 @@ def check_new_edge_forms_triangle(G, u, v):
     if nx.triangles(g_copy, u) > u_triangle or nx.triangles(g_copy, v) > v_triangle:
         return False
     return True
+
+def lowest_eigen_filter(G, Q, k=1):
+    edge_collector = list()
+    triangle_check_edges = span_with_degree_mul_centrality_with_triangle_check(G,Q,k)
+    print('triangle_check_edges: ', triangle_check_edges)
+    for (u,v,w) in triangle_check_edges:
+        g_copy = G.copy()
+        g_copy.add_edge(u,v)
+        smallest_eig_lower_bound = eb.lower_bound_for_second_smallest_laplacian_eigenvalue_diam(g_copy)
+        edge_collector.append(((u,v), smallest_eig_lower_bound))
+    edge_collector = sorted(edge_collector, key=lambda item: item[1], reverse=False)
+    print('len(edge_collector): ', len(edge_collector), 'edge_collector: ', edge_collector)    
+    potential_edge = [(edge[0][0], edge[0][1], 1) for edge in edge_collector if edge[1] == edge_collector[0][1]]
+    print('len(potential_edge)', len(potential_edge), 'potential_edge: ', potential_edge)
+    return potential_edge
