@@ -4,7 +4,7 @@ import graph as g
 import itertools
 import multiprocessing as mp
 import eigenvalue_bounds as eb
-
+import random
 
 def algorithm_1(G, Q, e, k):
     q = len(Q)
@@ -160,14 +160,22 @@ def check_new_edge_forms_triangle(G, u, v):
 def lowest_eigen_filter(G, Q, k=1):
     edge_collector = list()
     triangle_check_edges = span_with_degree_mul_centrality_with_triangle_check(G,Q,k)
-    print('triangle_check_edges: ', triangle_check_edges)
+    #print('triangle_check_edges: ', triangle_check_edges)
     for (u,v,w) in triangle_check_edges:
         g_copy = G.copy()
         g_copy.add_edge(u,v)
         smallest_eig_lower_bound = eb.lower_bound_for_second_smallest_laplacian_eigenvalue_diam(g_copy)
         edge_collector.append(((u,v), smallest_eig_lower_bound))
     edge_collector = sorted(edge_collector, key=lambda item: item[1], reverse=False)
-    print('len(edge_collector): ', len(edge_collector), 'edge_collector: ', edge_collector)    
+    #print('len(edge_collector): ', len(edge_collector), 'edge_collector: ', edge_collector)    
     potential_edge = [(edge[0][0], edge[0][1], 1) for edge in edge_collector if edge[1] == edge_collector[0][1]]
-    print('len(potential_edge)', len(potential_edge), 'potential_edge: ', potential_edge)
+    #print('len(potential_edge)', len(potential_edge), 'potential_edge: ', potential_edge)
     return potential_edge
+
+def new_algorithm_with_random_selection(G, Q):
+    edge_list = lowest_eigen_filter(G, Q)
+    current_edges = [(u,v,1) for u,v in G.edges]
+    if len(edge_list) == 0:
+        edge_list = [item for item in Q if item not in current_edges]
+    #print('edge_list: ', edge_list)
+    return random.choice(edge_list)
