@@ -179,3 +179,36 @@ def new_algorithm_with_random_selection(G, Q):
         edge_list = [item for item in Q if item not in current_edges]
     #print('edge_list: ', edge_list)
     return random.choice(edge_list)
+
+def new_algorithm(G,Q):
+    edge_list = list(span_with_degree_mul_centrality(G, Q))
+    print('span_with_degree_mul: ', edge_list)
+    if len(edge_list) == 1:
+        return edge_list[0]
+    
+    triangle_check_for_potential_edges = list()
+    for (u,v,w) in edge_list:
+        new_triangle = check_new_edge_forms_triangle(G, u, v)
+        if new_triangle:
+            triangle_check_for_potential_edges.append((u,v,1))
+    
+    
+    if len(triangle_check_for_potential_edges) == 0:
+        triangle_check_for_potential_edges = edge_list
+        
+    if len(triangle_check_for_potential_edges) == 1:
+        return triangle_check_for_potential_edges[0]
+    
+    print('triangle_check_for_potential_edges: ', triangle_check_for_potential_edges)
+    edge_collector = list()
+    for (u,v,w) in triangle_check_for_potential_edges:
+        g_copy = G.copy()
+        g_copy.add_edge(u,v)
+        smallest_eig_lower_bound = eb.lower_bound_for_second_smallest_laplacian_eigenvalue_diam(g_copy)
+        edge_collector.append(((u,v), smallest_eig_lower_bound))
+    edge_collector = sorted(edge_collector, key=lambda item: item[1], reverse=False)
+    eigenv_edge = [(edge[0][0], edge[0][1], 1) for edge in edge_collector if edge[1] == edge_collector[0][1]]
+    print('eigenv_edge: ', eigenv_edge)
+    
+    
+    return random.choice(eigenv_edge)

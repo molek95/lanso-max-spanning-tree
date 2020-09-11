@@ -9,23 +9,24 @@ import spanning_tree_algorithms as st_alg
 import networkx as nx
 import graph
 import eigenvalue_bounds as eb
+k = 3
+t = graph.create_barabasi_albert_graph(10,2)
+t_copy = t.copy()
 
-t = graph.create_barabasi_albert_graph(15,2)
-#graph.draw(t)
-""" 
-lb = eb.lower_bound_for_largest_laplacian_eigenvalue(t)
-print('lower bound: ', lb)
-lb2 = eb.lower_bound_for_second_largest_laplacian_eigenvalue(t)
-print('second lower bound: ', lb2)
-lb3, ub = eb.bound_for_second_smallest_laplacian_eigenvalue(t)
-print('lb3: ', lb3)
-print('ub: ', ub)
-lb4 = eb.lower_bound_for_second_smallest_laplacian_eigenvalue_diam(t)
-print('lb4: ', lb4)
-"""
+basic_span = graph.calculate_number_of_spanning_trees(t)
+
 n = len(t.nodes())
 g_comp = graph.fully_connected_graph_from_list(n)
 dif = graph.difference(g_comp, t).edges(data='weight', default=1)
+#correct_span = st_alg.graph_enumeration(t, dif, k, 8)
 
-potential_edges = st_alg.lowest_eigen_filter(t,dif)
-print(potential_edges)
+edge_collector = list()
+for i in range(1, k + 1):
+    #st_alg.new_algorithm(t,dif)
+    print('-------------------------------')
+    u,v,w = st_alg.new_algorithm(t,dif)
+    t.add_edge(u, v)
+    print('-------------------------------')
+    #edge_collector.append((u,v,w))
+    
+#algorithm_span = graph.calculate_number_of_spanning_trees(t)
