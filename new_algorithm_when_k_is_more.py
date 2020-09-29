@@ -15,7 +15,7 @@ import time
 import algorithm_analyzer as alg_analize
 import sys
 
-def compare_algorithms(k, sample_size, barabasi_albert_n, barabas_albert_m, result_file):
+def compare_algorithms(k, sample_size, barabasi_albert_n, barabas_albert_m, result_file, cpu_number = 1, is_graph_enumeration = False):
     basic_graph_collector = list()
     basic_span_collector = list()
     correct_span_collector = list()
@@ -45,21 +45,21 @@ def compare_algorithms(k, sample_size, barabasi_albert_n, barabas_albert_m, resu
         basic_span_collector.append(basic_span)
         
         print(str(index+1) + '. graph is created')
-        print('time: ', time.time() - global_start_time)
         n = len(t.nodes())
         g_comp = graph.fully_connected_graph_from_list(n)
         dif = graph.difference(g_comp, t).edges(data='weight', default=1)
         dif = list(dif)
         dif_2 = dif.copy()
         dif_3 = dif.copy()
-        dif_4 = dif.copy()
         
-        correct_span = st_alg.graph_enumeration(t, dif, k, 8)
-        correct_span_collector.append(correct_span[0])
-        correct_edge_collector.append(correct_span[1])
-        
-        print('correct spanning tree no. : ', correct_span)
-        print('time: ', time.time() - global_start_time)
+        if is_graph_enumeration:
+            print('time: ', time.time() - global_start_time)            
+            correct_span = st_alg.graph_enumeration(t, dif, k, cpu_number)
+            correct_span_collector.append(correct_span[0])
+            correct_edge_collector.append(correct_span[1])
+            
+            print('correct spanning tree no. : ', correct_span)
+            print('time: ', time.time() - global_start_time)
         
         edge_collector = list()
         start_time = time.time()
@@ -123,25 +123,42 @@ def compare_algorithms(k, sample_size, barabasi_albert_n, barabas_albert_m, resu
         greedy_edge_collector.append(greedy_p)
         greedy_time.append((time.time() - start_time))
         
-        
-    report_data = {
-        'basic_graph_collector': basic_graph_collector,
-        'basic_span_collector': basic_span_collector,
-        'correct_span_collector': correct_span_collector,
-        'correct_edge_collector': correct_edge_collector,
-        'algorithm_span_collector': algorithm_span_collector,
-        'algorithm_edge_collector': algorithm_edge_collector,
-        'algorithm_time': algorithm_time,
-        'improved_algorithm_span_collector': improved_algorithm_span_collector,
-        'improved_algorithm_edge_collector': improved_algorithm_edge_collector,
-        'improved_algorithm_time': improved_algorithm_time,
-        'algorithm_1_span_collector': algorithm_1_span_collector,
-        'algorithm_1_edge_collector': algorithm_1_edge_collector,
-        'algorithm_1_time': algorithm_1_time,
-        'greedy_span_collector': greedy_span_collector,
-        'greedy_edge_collector': greedy_edge_collector,
-        'greedy_time': greedy_time
-    }
+    if is_graph_enumeration:    
+        report_data = {
+            'basic_graph_collector': basic_graph_collector,
+            'basic_span_collector': basic_span_collector,
+            'correct_span_collector': correct_span_collector,
+            'correct_edge_collector': correct_edge_collector,
+            'algorithm_span_collector': algorithm_span_collector,
+            'algorithm_edge_collector': algorithm_edge_collector,
+            'algorithm_time': algorithm_time,
+            'improved_algorithm_span_collector': improved_algorithm_span_collector,
+            'improved_algorithm_edge_collector': improved_algorithm_edge_collector,
+            'improved_algorithm_time': improved_algorithm_time,
+            'algorithm_1_span_collector': algorithm_1_span_collector,
+            'algorithm_1_edge_collector': algorithm_1_edge_collector,
+            'algorithm_1_time': algorithm_1_time,
+            'greedy_span_collector': greedy_span_collector,
+            'greedy_edge_collector': greedy_edge_collector,
+            'greedy_time': greedy_time
+        }
+    else:
+        report_data = {
+            'basic_graph_collector': basic_graph_collector,
+            'basic_span_collector': basic_span_collector,
+            'algorithm_span_collector': algorithm_span_collector,
+            'algorithm_edge_collector': algorithm_edge_collector,
+            'algorithm_time': algorithm_time,
+            'improved_algorithm_span_collector': improved_algorithm_span_collector,
+            'improved_algorithm_edge_collector': improved_algorithm_edge_collector,
+            'improved_algorithm_time': improved_algorithm_time,
+            'algorithm_1_span_collector': algorithm_1_span_collector,
+            'algorithm_1_edge_collector': algorithm_1_edge_collector,
+            'algorithm_1_time': algorithm_1_time,
+            'greedy_span_collector': greedy_span_collector,
+            'greedy_edge_collector': greedy_edge_collector,
+            'greedy_time': greedy_time
+        }
     
     df = pd.DataFrame(report_data)
     
@@ -155,7 +172,8 @@ def compare_algorithms(k, sample_size, barabasi_albert_n, barabas_albert_m, resu
 
  
 if __name__ == "__main__":
-    
+    is_graph_enumeration = False
+    cpu_number = 1
     if (sys.argv):
         k = int(sys.argv[1])
         sample_size = int(sys.argv[2])
@@ -166,6 +184,10 @@ if __name__ == "__main__":
     else:
         print('Some parameters are missing')
     
-    compare_algorithms(k, sample_size, barabasi_n, barabasi_m, result_file)
+    if len(sys.argv) == 8:
+        cpu_number = int(sys.argv[7])
+        is_graph_enumeration = True
+    
+    compare_algorithms(k, sample_size, barabasi_n, barabasi_m, result_file, cpu_number, is_graph_enumeration)
     alg_analize.algorithm_evaluation(result_file, report_file, k)
     

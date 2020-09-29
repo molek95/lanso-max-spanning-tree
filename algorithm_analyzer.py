@@ -33,58 +33,87 @@ def algorithm_evaluation(file_name, result_url, k):
     base_alg_time = base_alg_time / len(df)
     
     greedy_alg_time = 0
+    alg_solution_dif = 0
+    improved_alg_solution_dif = 0
+    base_solution_dif = 0
+    greedy_solution_dif = 0
+    
     for t in df['greedy_time']:
         greedy_alg_time = greedy_alg_time + t
     greedy_alg_time = greedy_alg_time / len(df)
-    
-    alg_solution_dif = 0
-    for index, row in df.iterrows():
-        alg_solution_dif = alg_solution_dif + (row['correct_span_collector'] - row['algorithm_span_collector'])
-    alg_solution_dif = alg_solution_dif / len(df)
-    
-    improved_alg_solution_dif = 0
-    for index, row in df.iterrows():
-        improved_alg_solution_dif = improved_alg_solution_dif + (row['correct_span_collector'] - row['improved_algorithm_span_collector'])
-    improved_alg_solution_dif = improved_alg_solution_dif / len(df)
-    
-    base_solution_dif = 0
-    for index, row in df.iterrows():
-        base_solution_dif = base_solution_dif + (row['correct_span_collector'] - row['algorithm_1_span_collector'])
-    base_solution_dif = base_solution_dif / len(df)
-    
-    greedy_solution_dif = 0
-    for index,row in df.iterrows():
-        greedy_solution_dif = greedy_solution_dif + (row['correct_span_collector'] - row['greedy_span_collector'])
-    greedy_solution_dif = greedy_solution_dif / len(df)
+        
+    if 'correct_span_collector' in df.columns:
+        for index, row in df.iterrows():
+            alg_solution_dif = alg_solution_dif + (row['correct_span_collector'] - row['algorithm_span_collector'])
+        alg_solution_dif = alg_solution_dif / len(df)
+        
+        for index, row in df.iterrows():
+            improved_alg_solution_dif = improved_alg_solution_dif + (row['correct_span_collector'] - row['improved_algorithm_span_collector'])
+        improved_alg_solution_dif = improved_alg_solution_dif / len(df)
+        
+        for index, row in df.iterrows():
+            base_solution_dif = base_solution_dif + (row['correct_span_collector'] - row['algorithm_1_span_collector'])
+        base_solution_dif = base_solution_dif / len(df)
+        
+        for index,row in df.iterrows():
+            greedy_solution_dif = greedy_solution_dif + (row['correct_span_collector'] - row['greedy_span_collector'])
+        greedy_solution_dif = greedy_solution_dif / len(df)
+        
+    else:
+        for index, row in df.iterrows():
+            alg_solution_dif = alg_solution_dif + (row['improved_algorithm_span_collector'] - row['algorithm_span_collector'])
+        alg_solution_dif = alg_solution_dif / len(df)
+        
+        for index, row in df.iterrows():
+            base_solution_dif = base_solution_dif + (row['improved_algorithm_span_collector'] - row['algorithm_1_span_collector'])
+        base_solution_dif = base_solution_dif / len(df)
+        
+        for index,row in df.iterrows():
+            greedy_solution_dif = greedy_solution_dif + (row['improved_algorithm_span_collector'] - row['greedy_span_collector'])
+        greedy_solution_dif = greedy_solution_dif / len(df)
     
     alg_time_list = list()
-    improved_alg_time_list = list()
     base_alg_time_list = list()
     greedy_time_list = list()
     alg_solution_dif_list = list()
     base_solution_dif_list = list()
-    improved_alg_solution_dif_list = list()
-    greedy_solution_dif_list = list()
+    greedy_solution_dif_list = list()    
+    improved_alg_time_list = list()
+    
+    if 'correct_span_collector' in df.columns:
+        improved_alg_solution_dif_list = list()
     
     alg_time_list.append(str(alg_time))
-    improved_alg_time_list.append(str(improved_alg_time))
     base_alg_time_list.append(str(base_alg_time))
     greedy_time_list.append(str(greedy_alg_time))
     alg_solution_dif_list.append(str(alg_solution_dif))
     base_solution_dif_list.append(str(base_solution_dif))
-    improved_alg_solution_dif_list.append(str(improved_alg_solution_dif))
     greedy_solution_dif_list.append(str(greedy_solution_dif))
+    improved_alg_time_list.append(str(improved_alg_time))
+    
+    if 'correct_span_collector' in df.columns:
+        improved_alg_solution_dif_list.append(str(improved_alg_solution_dif))
         
-    result_data = {
-        'alg_time': alg_time_list,
-        'improved_alg_time': improved_alg_time_list,
-        'base_alg_time': base_alg_time_list,
-        'greedy_time': greedy_time_list,
-        'alg_solution_dif': alg_solution_dif_list,
-        'improved_alg_solution_dif': improved_alg_solution_dif_list,
-        'base_solution_dif': base_solution_dif_list,
-        'greedy_solution_dif_list': greedy_solution_dif_list,
-    }
+        result_data = {
+            'random_select_alg_time': alg_time_list,
+            'improved_alg_time': improved_alg_time_list,
+            'alg_1_time': base_alg_time_list,
+            'greedy_time': greedy_time_list,
+            'ranom_select_alg_solution_dif': alg_solution_dif_list,
+            'improved_alg_solution_dif': improved_alg_solution_dif_list,
+            'alg_1_solution_dif': base_solution_dif_list,
+            'greedy_solution_dif_list': greedy_solution_dif_list,
+        }
+    else:
+        result_data = {
+            'random_select_alg_time': alg_time_list,
+            'improved_alg_time': improved_alg_time_list,
+            'alg_1_time': base_alg_time_list,
+            'greedy_time': greedy_time_list,
+            'random_select_alg_solution_dif': alg_solution_dif_list,
+            'alg_1_solution_dif': base_solution_dif_list,
+            'greedy_solution_dif_list': greedy_solution_dif_list,
+        }
     
     res_df = pd.DataFrame(result_data)
     
