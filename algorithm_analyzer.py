@@ -61,6 +61,10 @@ def algorithm_evaluation(file_name, result_url, k):
         
     else:
         for index, row in df.iterrows():
+            improved_alg_solution_dif = improved_alg_solution_dif + (row['improved_algorithm_span_collector'])
+        improved_alg_solution_dif = improved_alg_solution_dif / len(df)
+        
+        for index, row in df.iterrows():
             alg_solution_dif = alg_solution_dif + (row['improved_algorithm_span_collector'] - row['algorithm_span_collector'])
         alg_solution_dif = alg_solution_dif / len(df)
         
@@ -80,8 +84,7 @@ def algorithm_evaluation(file_name, result_url, k):
     greedy_solution_dif_list = list()    
     improved_alg_time_list = list()
     
-    if 'correct_span_collector' in df.columns:
-        improved_alg_solution_dif_list = list()
+    improved_alg_solution_dif_list = list()
     
     alg_time_list.append(str(alg_time))
     base_alg_time_list.append(str(base_alg_time))
@@ -91,9 +94,9 @@ def algorithm_evaluation(file_name, result_url, k):
     greedy_solution_dif_list.append(str(greedy_solution_dif))
     improved_alg_time_list.append(str(improved_alg_time))
     
-    if 'correct_span_collector' in df.columns:
-        improved_alg_solution_dif_list.append(str(improved_alg_solution_dif))
-        
+    improved_alg_solution_dif_list.append(str(improved_alg_solution_dif))
+    
+    if 'correct_span_collector' in df.columns:  
         result_data = {
             'random_select_alg_time': alg_time_list,
             'improved_alg_time': improved_alg_time_list,
@@ -110,6 +113,7 @@ def algorithm_evaluation(file_name, result_url, k):
             'improved_alg_time': improved_alg_time_list,
             'alg_1_time': base_alg_time_list,
             'greedy_time': greedy_time_list,
+            'avarage_spanning_tree_with_improved_alg': improved_alg_solution_dif,
             'random_select_alg_solution_dif': alg_solution_dif_list,
             'alg_1_solution_dif': base_solution_dif_list,
             'greedy_solution_dif_list': greedy_solution_dif_list,

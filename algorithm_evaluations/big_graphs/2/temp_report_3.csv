@@ -1,2 +1,2 @@
-random_select_alg_time,improved_alg_time,alg_1_time,greedy_time,ranom_select_alg_solution_dif,improved_alg_solution_dif,alg_1_solution_dif,greedy_solution_dif_list
-0.008099842071533202,0.21749482154846192,0.12051353454589844,0.03585038185119629,86.6,3.6,832.8,832.8
+random_select_alg_time,improved_alg_time,alg_1_time,greedy_time,avarage_spanning_tree_with_improved_alg,random_select_alg_solution_dif,alg_1_solution_dif,greedy_solution_dif_list
+0.0038607120513916016,0.1356043815612793,0.11262526512145996,0.03504214286804199,6903.4,143.8,853.0,853.0
