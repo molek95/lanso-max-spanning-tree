@@ -5,6 +5,5 @@ python3 new_algorithm_when_k_is_more.py 4 50 15 2 sample_50_k_4_barabasi_20_2_re
 python3 new_algorithm_when_k_is_more.py 4 25 20 2 sample_25_k_4_barabasi_20_2_res sample_25_k_4_barabasi_20_2_report
 python3 new_algorithm_when_k_is_more.py 5 25 15 2 sample_25_k_5_barabasi_15_2_res sample_25_k_5_barabasi_15_2_report
 python3 new_algorithm_when_k_is_more.py 5 25 20 2 sample_25_k_5_barabasi_20_2_res sample_25_k_5_barabasi_20_2_report
-
 python3 new_algorithm_when_k_is_more.py 3 25 50 2 sample_25_k_3_barabasi_50_2_res sample_25_k_3_barabasi_50_2_report
 python3 new_algorithm_when_k_is_more.py 3 25 50 3 sample_25_k_3_barabasi_50_3_res sample_25_k_3_barabasi_50_3_report
