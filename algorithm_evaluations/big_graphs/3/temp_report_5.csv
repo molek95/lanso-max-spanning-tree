@@ -1,0 +1,2 @@
+random_select_alg_time,improved_alg_time,alg_1_time,greedy_time,diam_time,avarage_spanning_tree_with_improved_alg,random_select_alg_solution_dif,alg_1_solution_dif,greedy_solution_dif_list,diam_solution_dif_list
+0.005165815353393555,0.26809258460998536,0.13567380905151366,0.049865198135375974,0.0014119148254394531,16154.4,18.2,1950.4,1950.4,1885.2

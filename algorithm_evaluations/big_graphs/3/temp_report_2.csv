@@ -1,2 +1,2 @@
-random_select_alg_time,improved_alg_time,alg_1_time,greedy_time,ranom_select_alg_solution_dif,improved_alg_solution_dif,alg_1_solution_dif,greedy_solution_dif_list
-0.021401023864746092,0.28423848152160647,0.13222408294677734,0.05231642723083496,117.2,288.8,2520.0,2520.0
+random_select_alg_time,improved_alg_time,alg_1_time,greedy_time,diam_time,ranom_select_alg_solution_dif,improved_alg_solution_dif,alg_1_solution_dif,greedy_solution_dif_list,diam_solution_dif_list
+0.011037755012512206,0.21763980388641357,0.1321500301361084,0.05016903877258301,0.0014765739440917968,217.5,291.5,2340.5,2340.5,2814.1

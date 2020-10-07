@@ -256,3 +256,24 @@ def new_algorithm(G,Q, cpu_number=1):
     #print('max_number_of_spanning_tree: ', max_number_of_spanning_tree)
     print('ret_3: ', max_number_of_spanning_tree[0][0])
     return max_number_of_spanning_tree[0][0]
+
+def find_largest_path(G):
+    max_eccentricity = nx.eccentricity(G)
+    max_eccentricity = {k: v for k, v in sorted(max_eccentricity.items(), key=lambda item: item[1], reverse=True)}
+    longest_path_vertex = list(max_eccentricity.keys())[0]
+    longest_path_length = list(max_eccentricity.values())[1]
+    longest_shortest_path = nx.shortest_path(G, source=longest_path_vertex)
+    longest_shortest_path = {k: v for k, v in longest_shortest_path.items() if len(v) == longest_path_length + 1}
+    longest_path_target = list(longest_shortest_path.keys())[0]
+    return longest_path_vertex, longest_path_target
+
+def diameter_algorithm(G, k):
+    g_copy = G.copy()
+    P = set()
+    print('DIAM g_copy edges ', len(g_copy.edges))
+    for i in range(1, k+1):
+        u, v = find_largest_path(g_copy)
+        g_copy.add_edge(u,v, weight=1)
+        P.add((u,v))
+    print('AFTER DIAM g_copy edges ', len(g_copy.edges))
+    return g.calculate_number_of_spanning_trees(g_copy), P

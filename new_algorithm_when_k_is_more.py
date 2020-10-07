@@ -33,12 +33,18 @@ def compare_algorithms(k, sample_size, barabasi_albert_n, barabas_albert_m, resu
     greedy_edge_collector = list()
     greedy_time = list()
     
+    diam_span_collector = list()
+    diam_edge_collector = list()
+    diam_time = list()
+    
     for index in range(sample_size):
         global_start_time = time.time()
         t = graph.create_barabasi_albert_graph(barabasi_albert_n, barabas_albert_m)
         t_copy = t.copy()
         t_copy_2 = t.copy()
         t_copy_3 = t.copy()
+        t_copy_4 = t.copy()
+        print('BASIC GRAPH EDGE: ', len(t_copy_4.edges))
         basic_graph_collector.append(t.edges)
         
         basic_span = graph.calculate_number_of_spanning_trees(t)
@@ -123,6 +129,13 @@ def compare_algorithms(k, sample_size, barabasi_albert_n, barabas_albert_m, resu
         greedy_edge_collector.append(greedy_p)
         greedy_time.append((time.time() - start_time))
         
+        start_time = time.time()
+        diam_span,diam_p = st_alg.diameter_algorithm(t_copy_4, k)
+        diam_span_collector.append(diam_span)
+        diam_edge_collector.append(diam_p)
+        diam_time.append((time.time() - start_time))
+        
+        
     if is_graph_enumeration:    
         report_data = {
             'basic_graph_collector': basic_graph_collector,
@@ -140,7 +153,10 @@ def compare_algorithms(k, sample_size, barabasi_albert_n, barabas_albert_m, resu
             'algorithm_1_time': algorithm_1_time,
             'greedy_span_collector': greedy_span_collector,
             'greedy_edge_collector': greedy_edge_collector,
-            'greedy_time': greedy_time
+            'greedy_time': greedy_time,
+            'diam_span_collector': diam_span_collector,
+            'diam_edge_collector': diam_edge_collector,
+            'diam_time': diam_time,
         }
     else:
         report_data = {
@@ -157,7 +173,10 @@ def compare_algorithms(k, sample_size, barabasi_albert_n, barabas_albert_m, resu
             'algorithm_1_time': algorithm_1_time,
             'greedy_span_collector': greedy_span_collector,
             'greedy_edge_collector': greedy_edge_collector,
-            'greedy_time': greedy_time
+            'greedy_time': greedy_time,
+            'diam_span_collector': diam_span_collector,
+            'diam_edge_collector': diam_edge_collector,
+            'diam_time': diam_time,
         }
     
     df = pd.DataFrame(report_data)

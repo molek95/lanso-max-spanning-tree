@@ -1,6 +1,10 @@
 #!/bin/bash
-python3 new_algorithm_when_k_is_more.py 3 10 10 2 temp_res_1 temp_report_1
-python3 new_algorithm_when_k_is_more.py 3 5 10 2 temp_res_2 temp_report_2 8
-python3 new_algorithm_when_k_is_more.py 2 5 10 2 temp_res_3 temp_report_3
-python3 new_algorithm_when_k_is_more.py 3 10 10 3 temp_res_4 temp_report_4
-#python3 new_algorithm_when_k_is_more.py 3 5 10 2 temp_res_5 temp_report_5
+python3 new_algorithm_when_k_is_more.py 3 50 15 2 sample_50_k_3_barabasi_15_2_res sample_50_k_3_barabasi_15_2_report
+python3 new_algorithm_when_k_is_more.py 3 25 20 2 sample_25_k_3_barabasi_20_2_res sample_20_k_3_barabasi_20_2_report
+python3 new_algorithm_when_k_is_more.py 4 50 15 2 sample_50_k_4_barabasi_20_2_res sample_50_k_4_barabasi_20_2_report
+python3 new_algorithm_when_k_is_more.py 4 25 20 2 sample_25_k_4_barabasi_20_2_res sample_25_k_4_barabasi_20_2_report
+python3 new_algorithm_when_k_is_more.py 5 25 15 2 sample_25_k_5_barabasi_15_2_res sample_25_k_5_barabasi_15_2_report
+python3 new_algorithm_when_k_is_more.py 5 25 20 2 sample_25_k_5_barabasi_20_2_res sample_25_k_5_barabasi_20_2_report
+
+python3 new_algorithm_when_k_is_more.py 3 25 50 2 sample_25_k_3_barabasi_50_2_res sample_25_k_3_barabasi_50_2_report
+python3 new_algorithm_when_k_is_more.py 3 25 50 3 sample_25_k_3_barabasi_50_3_res sample_25_k_3_barabasi_50_3_report
