@@ -213,6 +213,11 @@ def _calculate_spanning_tree_with_one_added_edge(u,v,G):
     g_copy.add_edge(u,v)
     return ((u,v), g.calculate_number_of_spanning_trees(g_copy))
 
+def _weighted_calculate_spanning_tree_with_one_added_edge(u,v,w,G):
+    g_copy = G.copy()
+    g_copy.add_edge(u,v, weight=w)
+    return ((u,v,w), g.calculate_number_of_spanning_trees(g_copy))
+
 def new_algorithm(G,Q, cpu_number=1):
     edge_list = list(span_with_degree_mul_centrality(G, Q))
     #print('span_with_degree_mul: ', edge_list)
@@ -277,3 +282,126 @@ def diameter_algorithm(G, k):
         P.add((u,v))
     print('AFTER DIAM g_copy edges ', len(g_copy.edges))
     return g.calculate_number_of_spanning_trees(g_copy), P
+
+
+def weighted_span_with_degree_mul_centrality(G, Q, k=1):
+    degree_container = list()
+    min_degree_nodes_container = list()
+    potential_edge_container = list()
+    min_degree_set = set()
+    
+    
+    for node in G.nodes:
+        degree_container.append((node, G.degree(weight='weight')[node]))
+    degree_container.sort(key=lambda x:x[1])
+   # print('degree_container', degree_container)
+    
+    for min_degree_nodes in degree_container:
+        if min_degree_nodes[1] == degree_container[0][1]:
+            min_degree_nodes_container.append(min_degree_nodes[0])
+            min_degree_set.add(degree_container[0][1])
+    if len(min_degree_nodes_container) == 1:
+        for min_degree_nodes in degree_container:
+            if min_degree_nodes[1] == degree_container[1][1]:
+                min_degree_nodes_container.append(min_degree_nodes[0])
+                min_degree_set.add(degree_container[1][1])
+
+    min_degree_list = list(min_degree_set)
+    #print('min_degree_list', min_degree_list)
+    #print('min_degree_nodes_container', min_degree_nodes_container)
+    #print('Q ', Q)
+    for (u,v,w) in Q:
+        if (u in min_degree_nodes_container or v in min_degree_nodes_container) and (G.degree(weight='weight')[u] in min_degree_list or G.degree(weight='weight')[v] in min_degree_list):
+            potential_edge_container.append((u,v, w))
+    #print('potential_edge_container', potential_edge_container)
+    
+   # triangle_check_for_potential_edges = list()
+   # for (u,v, w) in potential_edge_container:
+   #     new_triangle = check_new_edge_forms_triangle(G, u, v)
+   #     if new_triangle:
+   #         triangle_check_for_potential_edges.append((u,v,w))
+   # return triangle_check_for_potential_edges
+            
+    return potential_edge_container
+    
+def weighted_new_algorithm_with_random_selection(G, Q):
+    edge_list = list(weighted_span_with_degree_mul_centrality(G, Q))
+    #print('edge_list', edge_list)
+    #print('edge_list len', len(edge_list))
+    if len(edge_list) == 1:
+        return (edge_list[0][0], edge_list[0][1])
+    
+    triangle_check_for_potential_edges = list()
+    for (u,v,w) in edge_list:
+        new_triangle = check_new_edge_forms_triangle(G, u, v)
+        if new_triangle:
+            triangle_check_for_potential_edges.append((u,v,w))
+    
+    #print('triangle: ', triangle_check_for_potential_edges)
+    #print('traingle len: ', len(triangle_check_for_potential_edges))
+    if len(triangle_check_for_potential_edges) == 0:
+        triangle_check_for_potential_edges = edge_list
+        
+    if len(triangle_check_for_potential_edges) == 1:
+        return (triangle_check_for_potential_edges[0][0], triangle_check_for_potential_edges[0][1], triangle_check_for_potential_edges[0][2])
+    
+    
+    edge_collector = list()
+    for (u,v,w) in triangle_check_for_potential_edges:
+        g_copy = G.copy()
+        g_copy.add_edge(u,v)
+        smallest_eig_lower_bound = eb.lower_bound_for_second_smallest_laplacian_eigenvalue_diam(g_copy)
+        edge_collector.append(((u,v, w), smallest_eig_lower_bound))
+    edge_collector = sorted(edge_collector, key=lambda item: item[1], reverse=False)
+    eigenv_edge = [(edge[0][0], edge[0][1], edge[0][2]) for edge in edge_collector if edge[1] == edge_collector[0][1]]
+    #print('rand eigenv_edge', eigenv_edge)
+    #print('rand eigenv_edge', len(eigenv_edge))
+    random_edge = random.choice(eigenv_edge)
+    return (random_edge[0], random_edge[1], random_edge[2])
+
+
+def weighted_new_algorithm(G, Q, cpu_number=1):
+    edge_list = list(weighted_span_with_degree_mul_centrality(G, Q))
+    #print('edge_list', edge_list)
+    #print('edge_list len', len(edge_list))
+    if len(edge_list) == 1:
+        return (edge_list[0][0], edge_list[0][1])
+    
+    triangle_check_for_potential_edges = list()
+    for (u,v,w) in edge_list:
+        new_triangle = check_new_edge_forms_triangle(G, u, v)
+        if new_triangle:
+            triangle_check_for_potential_edges.append((u,v,w))
+    
+    #print('triangle: ', triangle_check_for_potential_edges)
+    #print('traingle len: ', len(triangle_check_for_potential_edges))
+    if len(triangle_check_for_potential_edges) == 0:
+        triangle_check_for_potential_edges = edge_list
+        
+    if len(triangle_check_for_potential_edges) == 1:
+        return (triangle_check_for_potential_edges[0][0], triangle_check_for_potential_edges[0][1], triangle_check_for_potential_edges[0][2])
+    
+    
+    edge_collector = list()
+    for (u,v,w) in triangle_check_for_potential_edges:
+        g_copy = G.copy()
+        g_copy.add_edge(u,v)
+        smallest_eig_lower_bound = eb.lower_bound_for_second_smallest_laplacian_eigenvalue_diam(g_copy)
+        edge_collector.append(((u,v, w), smallest_eig_lower_bound))
+    edge_collector = sorted(edge_collector, key=lambda item: item[1], reverse=False)
+    eigenv_edge = [(edge[0][0], edge[0][1], edge[0][2]) for edge in edge_collector if edge[1] == edge_collector[0][1]]
+    #print('det eigenv_edge', eigenv_edge)
+    #print('det eigenv_edge', len(eigenv_edge))
+
+
+    max_number_of_spanning_tree = list()
+    g_copy = G.copy()
+    pool = mp.Pool(cpu_number)
+    max_number_of_spanning_tree = [pool.apply(_weighted_calculate_spanning_tree_with_one_added_edge, args=(u, v,w, g_copy)) for (u,v,w) in eigenv_edge]
+    pool.close()
+    pool.join()
+    max_number_of_spanning_tree.sort(key=lambda x:x[1])
+    #print('max_number_of_spanning_tree: ', max_number_of_spanning_tree)
+    max_number_of_spanning_tree = max_number_of_spanning_tree[::-1]
+    #print('ret_3: ', max_number_of_spanning_tree[0][0])
+    return max_number_of_spanning_tree[0][0]

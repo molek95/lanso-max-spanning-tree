@@ -22,6 +22,13 @@ def create_barabasi_albert_graph(n, m, weight_values=1):
         g[u][v]['weight'] = weight_values
     return g
 
+def create_weighted_barabasi_albert_graph(n, m, lower_weight=1, upper_weight=5):
+    g = nx.barabasi_albert_graph(n, m)
+    for (u,v) in g.edges:
+        g[u][v]['weight'] = random.randint(lower_weight, upper_weight)
+    return g
+
+
 """
 Creates a star graph.
 @params:
